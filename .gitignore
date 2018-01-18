@@ -1,0 +1,6 @@
+/mongo/conf/
+/mongo/data-local/
+/mongo/data/
+/mongo/restaurants.json
+/frontEnd/angularProject/node_modules/
+/frontEnd/angularProject/.vscode

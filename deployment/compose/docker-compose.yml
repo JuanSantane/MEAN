@@ -1,0 +1,25 @@
+version: '3'
+services:
+  mongo-server:
+    image: mongo:latest
+    ports:
+     - "1219:27017"
+    volumes:
+      - ../../mongo/data/:/data/db/
+  node-server:
+    build: ../../node/
+    ports:
+      - 1214:3000
+    depends_on:
+      - mongo-filling
+  mongo-filling:
+    build: ../../mongo/
+    depends_on:
+      - mongo-server
+  angular-nginx:
+  # image: nginx:latest
+    build: ../../frontEnd/
+    ports:
+      - 1223:80
+    depends_on:
+      - node-server
