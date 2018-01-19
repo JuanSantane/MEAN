@@ -2,5 +2,29 @@
 /mongo/data-local/
 /mongo/data/
 /mongo/restaurants.json
-/frontEnd/angularProject/node_modules/
+
 /frontEnd/angularProject/.vscode
+
+# compiled output by angularProject
+/frontEnd/angularProject/tmp
+/frontEnd/angularProject/out-tsc
+
+# angularProject dependencies
+/frontEnd/angularProject/node_modules
+
+
+# IDE - VSCode
+/frontEnd/angularProject/.vscode/*
+/frontEnd/angularProject/!.vscode/settings.json
+/frontEnd/angularProject/!.vscode/tasks.json
+/frontEnd/angularProject/!.vscode/launch.json
+/frontEnd/angularProject/!.vscode/extensions.json
+
+
+# e2e
+/frontEnd/angularProject/e2e/*.js
+/frontEnd/angularProject/e2e/*.map
+
+# System Files
+/frontEnd/angularProject/.DS_Store
+/frontEnd/angularProject/Thumbs.db
