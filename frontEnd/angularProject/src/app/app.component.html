@@ -1,2 +1,10 @@
-<app-header></app-header>
-<app-devices-list></app-devices-list>
+<div>
+  <div style="float:left; overflow-y: scroll; height:800px ">
+    <app-devices-list (deviceSelected)="updateSelectedDevice($event)"></app-devices-list>
+  </div>
+  <div style="float:left">
+    <div style="display: inline-block; padding: 50px; ">
+        <app-device-detail [device]="selectedDevice"></app-device-detail>
+    </div>
+  </div>
+</div>

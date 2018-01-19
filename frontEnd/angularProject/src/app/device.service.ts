@@ -1,3 +1,4 @@
+import { Device } from './shared/Device';
 import { Request } from './shared/request';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
@@ -64,5 +65,6 @@ export class DeviceService {
     });
 
   }
+
 
 }

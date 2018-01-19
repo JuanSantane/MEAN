@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Device } from './../shared/Device';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { DeviceService } from '../device.service';
 import { Request } from '../shared/request';
 
@@ -11,15 +12,8 @@ export class DevicesListComponent implements OnInit {
 
   appName = this.deviceService.getAppName();
   queryRqst: Request = new Request();
-
-  devices = [
-    {
-      id: 'DEFAUL_ID',
-      type: 'DEAULT_TYPE',
-      name: 'DEFAULT_NAME',
-      desc: 'DEFAULT_DESC'
-    }
-  ];
+  devices: Device[] = [ new Device('DEFAULT_ID', 'DEFAULT_NAME', 'DEFAULT_TYPE', 'DEFAULT_DESCRIPTION') ];
+   @Output() deviceSelected = new EventEmitter<Device>();
 
   constructor(private deviceService: DeviceService) {}
 
@@ -47,6 +41,20 @@ export class DevicesListComponent implements OnInit {
   }
   ngOnInit() {
 
+  }
+
+  getUrlImage(deviceType: string) {
+   if (deviceType === 'MRA') {
+    return 'https://raychambers.files.wordpress.com/2013/09/python.jpg';
+   }else if (deviceType === 'VOC') {
+    return 'https://cdn.auth0.com/blog/angular2-series/angular2-logo.png';
+   }else {
+     return 'http://www.myiconfinder.com/uploads/iconsets/256-256-601e6208944772964c75dfe54a2d4af4.png';
+   }
+  }
+
+  ondeviceSelected(deviceSelected: Device) {
+     this.deviceSelected.emit(deviceSelected);
   }
 
 }

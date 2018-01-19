@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Device } from './../../shared/Device';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-device',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DeviceComponent implements OnInit {
 
+  @Input() device: Device ;
+
+  @Output() deviceSelected = new EventEmitter<Device>();
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onDeviceSelected(selectedDevice: Device) {
+    this.deviceSelected.emit(this.device);
   }
 
 }

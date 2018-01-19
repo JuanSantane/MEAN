@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Device } from './shared/Device';
+import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   appName: String = 'APP_DEFAULT_NAME';
+  selectedDevice: Device;
+
+  updateSelectedDevice(newSelectedDevice: Device) {
+    this.selectedDevice = newSelectedDevice;
+  }
 }

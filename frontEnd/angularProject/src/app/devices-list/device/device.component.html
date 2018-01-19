@@ -1,3 +1,6 @@
-<p>
-  device works!
-</p>
+<div class="row" (click)="onDeviceSelected(device)"  >
+  <p class="list-group-item list-group" appHighlight>
+    <ng-content></ng-content>
+    {{ device.type }} -- {{ device.name }} -- {{ device.desc }}
+  </p>
+</div>
