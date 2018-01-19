@@ -7,7 +7,7 @@ services:
     volumes:
       - ../../mongo/data/:/data/db/
   node-server:
-    build: ../../node/
+    build: ../../backEnd/
     ports:
       - 1214:3000
     depends_on:
