@@ -4,10 +4,12 @@ import { DeviceService } from './device.service';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { DevicesListComponent } from './devices-list/devices-list.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DevicesListComponent
   ],
   imports: [
     BrowserModule,
