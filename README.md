@@ -16,7 +16,7 @@ How to use it
   `cd /tmp/ && git clone https://github.com/JuanSantane/MEAN.git && cd MEAN`
 
 2) Run project
-   - run  `cd /tmp/MEAN/ && docker-compose up`
+   - run  `cd /tmp/MEAN/deployment/compose/ && docker-compose up`
 
 3) Edit the project
    - If you want to write some code in the angular project. you need node_modules folder.

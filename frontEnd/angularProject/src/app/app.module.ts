@@ -5,11 +5,15 @@ import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { DevicesListComponent } from './devices-list/devices-list.component';
+import { DeviceComponent } from './devices-list/device/device.component';
+import { DeviceDetailComponent } from './devices-list/device-detail/device-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    DevicesListComponent
+    DevicesListComponent,
+    DeviceComponent,
+    DeviceDetailComponent
   ],
   imports: [
     BrowserModule,
