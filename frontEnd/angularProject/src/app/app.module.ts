@@ -1,3 +1,4 @@
+import { HeaderComponent } from './header/header.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { DeviceService } from './device.service';
@@ -13,7 +14,8 @@ import { DeviceDetailComponent } from './devices-list/device-detail/device-detai
     AppComponent,
     DevicesListComponent,
     DeviceComponent,
-    DeviceDetailComponent
+    DeviceDetailComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
