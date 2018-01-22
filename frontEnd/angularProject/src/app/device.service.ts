@@ -9,6 +9,8 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class DeviceService {
+
+  selectedDevice: Device = null;
   constructor(private http: Http) {}
 
   // storeServers(servers: any[]) {
@@ -64,6 +66,13 @@ export class DeviceService {
       return Observable.throw('Something went wrong');
     });
 
+  }
+  public setSelectedDevice(device: Device) {
+    this.selectedDevice = device;
+  }
+
+  public getSelectedDevice() {
+    return this.selectedDevice;
   }
 
 

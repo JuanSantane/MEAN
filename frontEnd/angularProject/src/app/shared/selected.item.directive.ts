@@ -5,7 +5,7 @@ import { Directive, HostListener,
   selector: '[appHighlight]'
 })
 export class SelectedItemDirective {
-  @HostBinding('class.open') wasSelected = false;
+  @HostBinding('class.open') selected = false;
   @HostBinding('style.background') background = 'transparent';
 
   constructor(item: ElementRef, renderer: Renderer2) {
@@ -15,19 +15,15 @@ export class SelectedItemDirective {
 
 
   @HostListener('click') toggleOpen() {
-    this.wasSelected = !this.wasSelected;
-    this.background = 'red';
+    this.selected = !this.selected;
+    this.background = '';
   }
 
   @HostListener('mouseenter') turnOnBackground() {
-    this.background = 'blue';
+    this.background = '#CECEF6';
   }
   @HostListener('mouseleave') turnOffBackground() {
-    if (this.wasSelected ) {
-      this.background = 'red';
-    }else {
-      this.background = 'transparent';
-    }
+    this.background = this.selected ? 'red' :  'transparent';
   }
 
 }

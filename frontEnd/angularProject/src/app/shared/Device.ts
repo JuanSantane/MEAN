@@ -1,10 +1,10 @@
 export class Device {
-  id: String;
-  name: String;
-  type: String;
-  desc: String;
+  id: string;
+  name: string;
+  type: string;
+  desc: string;
 
-  constructor(id: String, name: String, type: String, desc: String) {
+  constructor(id: string, name: string, type: string, desc: string) {
     this.id = id;
     this.name = name;
     this.type = type;

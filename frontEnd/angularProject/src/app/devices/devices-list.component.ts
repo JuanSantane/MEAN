@@ -1,5 +1,5 @@
 import { Device } from './../shared/Device';
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { DeviceService } from '../device.service';
 import { Request } from '../shared/request';
 
@@ -8,7 +8,7 @@ import { Request } from '../shared/request';
   templateUrl: './devices-list.component.html',
   styleUrls: ['./devices-list.component.css']
 })
-export class DevicesListComponent implements OnInit {
+export class DevicesComponent implements OnInit {
 
   appName = this.deviceService.getAppName();
   queryRqst: Request = new Request();
@@ -17,17 +17,20 @@ export class DevicesListComponent implements OnInit {
 
   constructor(private deviceService: DeviceService) {}
 
-  onGetDevices() {
-    console.log(this.queryRqst);
-    this.fixRequest();
-    this.deviceService.getDevices(this.queryRqst)
-    .subscribe(
-      (devices: any[] ) =>  {
-        this.devices = devices;
-        console.log(devices);
-      },
-      (error) => { console.log(error); }
-    );
+  onGetDevices(event) {
+    if (event == null || (event != null && event.keyCode === 13) ||
+    this.queryRqst.isVoid()) {
+      console.log(this.queryRqst);
+      this.fixRequest();
+      this.deviceService.getDevices(this.queryRqst)
+      .subscribe(
+        (devices: any[] ) =>  {
+          this.devices = devices;
+          console.log(devices);
+        },
+        (error) => { console.log(error); }
+      );
+    }
   }
   fixRequest() {
   (this.queryRqst.name != null && this.queryRqst.name.trim() === '' )
@@ -40,7 +43,7 @@ export class DevicesListComponent implements OnInit {
 
   }
   ngOnInit() {
-
+    this.onGetDevices(null);
   }
 
   getUrlImage(deviceType: string) {
@@ -54,7 +57,6 @@ export class DevicesListComponent implements OnInit {
   }
 
   ondeviceSelected(deviceSelected: Device) {
-     this.deviceSelected.emit(deviceSelected);
+     console.log(deviceSelected);
   }
-
 }

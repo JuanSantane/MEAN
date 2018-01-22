@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+
+      <h1>{{ appName }} </h1>
+
+      <!-- <input matInput type="text"  [(ngModel)]="queryRqst.name"> -->
+      <mat-form-field>
+        <input matInput type="text" placeholder="Name"
+        [(ngModel)]="queryRqst.name" (keyup)="onGetDevices($event)" >
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" placeholder="type"
+        [(ngModel)]="queryRqst.type" (keyup)="onGetDevices($event)" >
+      </mat-form-field>
+
+
+      <!-- <button mat-button  (click)="onGetDevices()">get Devices</button> -->
+
+      <div>
+        Filtering by:
+        <div *ngIf="queryRqst.name">
+          name: {{queryRqst.name}}
+        </div>
+        <div *ngIf="queryRqst.type">
+          Type: {{queryRqst.type}}
+        </div>
+      </div>
+
+      <app-device *ngFor="let deviceItem of devices"
+       [device]="deviceItem" (deviceSelected)="ondeviceSelected($event)" >
+        <img [src]="getUrlImage(deviceItem.type)" height="60" width="60">
+      </app-device>
+    </div>
+  </div>
+</div>

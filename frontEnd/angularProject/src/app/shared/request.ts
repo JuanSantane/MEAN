@@ -8,6 +8,8 @@ export class Request {
     this.type = null;
   }
   public isVoid() {
-    return this.name == null && this.type == null;
+    return( (this.name == null || this.name === '')
+            && (this.type == null || this.type === '' )
+          );
   }
 }
