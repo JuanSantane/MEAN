@@ -19,9 +19,13 @@ export class DeviceComponent implements OnInit {
 
   ngOnInit() {}
 
-  onDeviceSelected(selectedDevice: Device) {
+  onViewDetails(selectedDevice: Device) {
     this.deviceService.setSelectedDevice(selectedDevice);
     console.log(this.deviceService.getSelectedDevice());
     this.router.navigate(['devices/' + this.device.id ]);
+  }
+
+  onDeleteItem() {
+    prompt('item will be deleted');
   }
 }

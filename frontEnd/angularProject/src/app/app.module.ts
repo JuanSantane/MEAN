@@ -14,6 +14,7 @@ import { DeviceComponent } from './devices/device/device.component';
 import { DeviceDetailComponent } from './devices/device-detail/device-detail.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AboutComponent } from './about/about.component';
+import { EmbedVideo } from 'ngx-embed-video';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { AboutComponent } from './about/about.component';
     HttpModule,
     BrowserAnimationsModule,
     MaterialModule,
-    AppRoutingModule
+    AppRoutingModule,
+    EmbedVideo.forRoot()
   ],
   providers: [DeviceService],
   bootstrap: [AppComponent]

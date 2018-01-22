@@ -16,14 +16,14 @@ export class SelectedItemDirective {
 
   @HostListener('click') toggleOpen() {
     this.selected = !this.selected;
-    this.background = '';
+    this.background = '#CECEF6';
   }
 
   @HostListener('mouseenter') turnOnBackground() {
     this.background = '#CECEF6';
   }
   @HostListener('mouseleave') turnOffBackground() {
-    this.background = this.selected ? 'red' :  'transparent';
+    this.background = this.selected ? '#CECEF6' :  'transparent';
   }
 
 }
