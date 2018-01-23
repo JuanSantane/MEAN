@@ -1,15 +1,18 @@
 <mat-card appHighlight>
-  <ng-content (click)="onViewDetails(device)"></ng-content>
+  <ng-content> </ng-content>
+
   {{ device.type }} -- {{ device.name }} -- {{ device.desc }}
 
   <div style="float: right">
-    <button mat-icon-button (click)="onDeleteItem()">
-        <i class="material-icons">delete</i>
+    <button mat-icon-button matTooltip="Delete">
+      <i class="material-icons">delete</i>
     </button>
-    <button mat-icon-button (click)="onViewDetails(device)">
+    <!-- [routerLink]="['/devices', device._id ]" -->
+    <button mat-icon-button matTooltip="Details"  [routerLink]="['/devices', device._id ]"
+     (click)="testing()" >
       <i class="material-icons">remove_red_eye</i>
     </button>
-    <button mat-icon-button [matMenuTriggerFor]="menu">
+    <button mat-icon-button matTooltip="More" [matMenuTriggerFor]="menu">
       <mat-icon>more_vert</mat-icon>
     </button>
     <div class="nav navbar-nav navbar-right">

@@ -24,7 +24,6 @@
           Type: {{queryRqst.type}}
         </div>
       </div>
-
       <app-device *ngFor="let deviceItem of devices" [device]="deviceItem" (deviceSelected)="ondeviceSelected($event)">
         <img [src]="getUrlImage(deviceItem.type)" height="60" width="60">
       </app-device>

@@ -11,7 +11,7 @@ const appRoutes: Routes = [
   {path: '', redirectTo: 'devices', pathMatch: 'full' },
   { path: 'devices', component: DevicesComponent },
   { path: 'about', component: AboutComponent },
-  { path: 'devices/:name', component: DeviceDetailComponent }
+  { path: 'devices/:id', component: DeviceDetailComponent }
   // { path: 'devices', component: DevicesComponent, children: [
   //   {path: ':name', component: DeviceDetailComponent }
   // ] },

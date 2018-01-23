@@ -16,7 +16,7 @@ export class SelectedItemDirective {
 
   @HostListener('click') toggleOpen() {
     this.selected = !this.selected;
-    this.background = '#CECEF6';
+    this.background =  '#CECEF6';
   }
 
   @HostListener('mouseenter') turnOnBackground() {

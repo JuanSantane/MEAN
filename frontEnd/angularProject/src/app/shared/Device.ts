@@ -1,16 +1,16 @@
 export class Device {
-  id: string;
+  _id: string;
   name: string;
   type: string;
   desc: string;
 
-  constructor(id: string, name: string, type: string, desc: string) {
-    this.id = id;
+  constructor(_id: string, name: string, type: string, desc: string) {
+    this._id = _id;
     this.name = name;
     this.type = type;
     this.desc = desc;
   }
   public isVoid() {
-    return this.name == null && this.type == null && this.id == null;
+    return this.name == null && this.type == null && this._id == null;
   }
 }

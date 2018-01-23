@@ -28,17 +28,21 @@ export class DeviceService {
 
   getDevices(rqst: Request) {
 
-  if (rqst.isVoid()) {
+  if (rqst.isVoid() || rqst == null) {
       return this.fixResponse('http://localhost:1214/devices');
   }
-  if (rqst.name != null) {
-    if (rqst.type != null) {
-      return this.fixResponse('http://localhost:1214/devices/' + rqst.name + '/' + rqst.type);
-    }
-   return this.fixResponse('http://localhost:1214/devices/' + rqst.name );
-  }else {
-    return this.fixResponse('http://localhost:1214/devices/null/' + rqst.type );
+  if (rqst.id != null) {
+    return this.fixResponse('http://localhost:1214/devices/' + rqst.id);
   }
+
+  // if (rqst.name != null) {
+  //   if (rqst.type != null) {
+  //     return this.fixResponse('http://localhost:1214/devices/' + rqst.id + '/' + rqst.type);
+  //   }
+  //  return this.fixResponse('http://localhost:1214/devices/' + rqst.name );
+  // }else {
+  //   return this.fixResponse('http://localhost:1214/devices/null/' + rqst.type );
+  // }
 }
 
   getAppName() {
@@ -51,14 +55,15 @@ export class DeviceService {
     return 'App default Name';
   }
 
-  fixResponse(route: String) {
-    return this.http.get('' + route )
+  fixResponse(route: string) {
+    return this.http.get( route )
     .map((response: Response) => {
       const data = response.json();
       for (const device of data) {
         if (!device.type) { device.type = 'DEFAULT TYPE'; }
         if (!device.name) { device.name = 'DEFAULT NAME'; }
         if (!device.desc) { device.desc = 'DEFAULT DESCRIPTION'; }
+        if (!device._id) { device._id = null; }
       }
       return data;
     })

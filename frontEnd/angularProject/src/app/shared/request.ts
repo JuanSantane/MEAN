@@ -1,4 +1,5 @@
 export class Request {
+  id: string;
   name: String;
   type: String;
   description: String;
@@ -10,6 +11,7 @@ export class Request {
   public isVoid() {
     return( (this.name == null || this.name === '')
             && (this.type == null || this.type === '' )
+            && (this.id == null || this.id === '' )
           );
   }
 }
