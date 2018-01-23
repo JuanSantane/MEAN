@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import { Device } from './../../shared/Device';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -14,6 +15,7 @@ export class DeviceDetailComponent implements OnInit, OnDestroy {
 
   queryRqst: Request = new Request();
   currentDevice: Device;
+  private paramsSubscription: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -22,20 +24,19 @@ export class DeviceDetailComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.route.params
-    .subscribe(
-      (params: Params) => {
-        this.queryRqst.id = params.id;
-        this.deviceService.getDevices(this.queryRqst)
+    this.paramsSubscription = this.route.params
       .subscribe(
-        (device: any ) =>  {
-          this.currentDevice = device;
-          console.log(this.currentDevice);
-        },
-        (error) => { console.log(error); }
+        (params: Params) => {
+          this.queryRqst.id = params.id;
+          this.deviceService.getDevices(this.queryRqst)
+        .subscribe(
+          (device: any ) =>  {
+            this.currentDevice = device;
+            console.log(this.currentDevice);
+          },
+          (error) => { console.log(error); }
+        ); }
       );
-      }
-    );
   }
 
   getUrlImage() {
@@ -53,7 +54,7 @@ export class DeviceDetailComponent implements OnInit, OnDestroy {
    }
 
    ngOnDestroy(): void {
-    console.log('ondestroy');
+    this.paramsSubscription.unsubscribe();
   }
 
 }

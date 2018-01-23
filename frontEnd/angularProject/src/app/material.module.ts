@@ -7,28 +7,23 @@ import {MatMenuModule} from '@angular/material/menu';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatSelectModule} from '@angular/material/select';
 
+
+const allModules = [
+  MatButtonModule,
+  MatCardModule,
+  MatInputModule,
+  MatMenuModule,
+  MatIconModule,
+  MatTooltipModule,
+  MatSnackBarModule,
+  MatDialogModule,
+  MatSelectModule
+];
 
 @NgModule({
-  imports: [
-    MatButtonModule,
-    MatCardModule,
-    MatInputModule,
-    MatMenuModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatSnackBarModule,
-    MatDialogModule
-  ],
-  exports: [
-    MatButtonModule,
-    MatCardModule,
-    MatInputModule,
-    MatMenuModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatSnackBarModule,
-    MatDialogModule
-  ],
+  imports: allModules,
+  exports: allModules,
 })
 export class MaterialModule { }

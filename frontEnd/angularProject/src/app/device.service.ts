@@ -10,7 +10,8 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class DeviceService {
 
-  selectedDevice: Device = null;
+  rootUrl = 'http://localhost:3000/';
+
   constructor(private http: Http) {}
 
   // storeServers(servers: any[]) {
@@ -29,12 +30,11 @@ export class DeviceService {
   getDevices(rqst: Request) {
 
   if (rqst.isVoid() || rqst == null) {
-      return this.fixResponse('http://localhost:1214/devices');
+      return this.fixResponse( this.rootUrl + 'devices');
   }
   if (rqst.id != null) {
-    return this.fixResponse('http://localhost:1214/devices/' + rqst.id);
+    return this.fixResponse( this.rootUrl + 'devices/' + rqst.id);
   }
-
   // if (rqst.name != null) {
   //   if (rqst.type != null) {
   //     return this.fixResponse('http://localhost:1214/devices/' + rqst.id + '/' + rqst.type);
@@ -44,6 +44,29 @@ export class DeviceService {
   //   return this.fixResponse('http://localhost:1214/devices/null/' + rqst.type );
   // }
 }
+  update(device: Device) {
+    const ruta = this.rootUrl + 'devices/' + device._id;
+    const body = device;
+    console.log(ruta);
+    console.log(body);
+    console.log('==========> respuesta del put');
+    return this.http.put( ruta , body )
+    .map((response: Response) => {
+      console.log('==========> respuesta del put');
+      console.log(response);
+      return response.json();
+    } )
+    .catch((error: Response) => {
+      console.log('ERROR');
+      return Observable.throw('Something went wrong');
+
+    });
+
+  }
+
+  delete () {
+
+  }
 
   getAppName() {
     // return this.http.get('http://localhost:1214/params')
@@ -72,13 +95,8 @@ export class DeviceService {
     });
 
   }
-  public setSelectedDevice(device: Device) {
-    this.selectedDevice = device;
-  }
 
-  public getSelectedDevice() {
-    return this.selectedDevice;
-  }
+
 
 
 }

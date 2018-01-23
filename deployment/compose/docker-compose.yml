@@ -3,7 +3,7 @@ services:
   mongo-server:
     image: mongo:latest
     ports:
-     - "1219:27017"
+     - 27017:27017
     volumes:
       - ../../mongoDB/data/:/data/db/
   node-server:

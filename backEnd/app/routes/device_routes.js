@@ -4,13 +4,36 @@ module.exports = function(app, db) {
 
   app.post("/devices", (req, res) => {
     // You'll create your note here.
-    console.log(req.body);
-    res.send({
-      id: "81hd7823jd74",
-      type: "MRA",
-      name: "nombre quemado",
-      desc: "este dispositivo es uanrespuesta quemanda"
-    });
+    console.log(req.body);    
+  });
+  app.post("/devices/:id", (req, res) => {
+    console.log(req.body);    
+  });
+
+  app.put("/devices/:id", (req, res) => {
+    
+    const id = req.params.id;
+    console.log('el id es --> ' +  id );
+    console.log('el nuevo objeto entrante es es --> ');
+    const newObject = req.body;  
+    console.log(newObject);
+    db.collection("devices")
+    .update(
+      { _id: id}, 
+      { name: newObject.name, type: newObject.type, desc: newObject.desc },
+      {upsert: false, multi: false}, function(err, result){
+        if (err) throw err;
+        res.json(result);
+        // db.collection("devices")
+        // .findOne({_id: new ObjectID.createFromHexString(id)},function(err, result) {
+        //   console.log(result);
+        //   // res.json(result);
+        // });
+        
+      });
+
+   
+    
   });
 
   app.get("/devices", (req, res) => {
@@ -34,6 +57,9 @@ module.exports = function(app, db) {
       res.json(result);
     });
   });
+
+  //post crear
+  // put actualizar
 
   app.get("/devices/:name/:type", (req, res) => {
     console.log(req.params);
@@ -62,9 +88,12 @@ module.exports = function(app, db) {
   function fixResponse(res) {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET");
+    res.setHeader("Access-Control-Allow-Methods", "PUT");
+    res.setHeader("Access-Control-Allow-Methods", "POS");
     res.setHeader(
       "Access-Control-Allow-Headers",
       "X-Requested-With,content-type"
+
     );
     return res;
   }

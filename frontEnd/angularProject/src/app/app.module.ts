@@ -1,3 +1,4 @@
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 import { MaterialModule } from './material.module';
 import { AppRoutingModule } from './routing.module';
@@ -15,6 +16,7 @@ import { DeviceDetailComponent } from './devices/device-detail/device-detail.com
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AboutComponent } from './about/about.component';
 import { EmbedVideo } from 'ngx-embed-video';
+import { EditDeviceComponent } from './devices/edit-device/edit-device.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { EmbedVideo } from 'ngx-embed-video';
     DeviceDetailComponent,
     HeaderComponent,
     SelectedItemDirective,
-    AboutComponent
+    AboutComponent,
+    EditDeviceComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
