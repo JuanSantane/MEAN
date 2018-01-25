@@ -2,79 +2,102 @@ import { Device } from './shared/Device';
 import { Request } from './shared/request';
 import { Injectable } from '@angular/core';
 import { Http, Headers } from '@angular/http';
+import { Subject } from 'rxjs/Subject';
 // tslint:disable-next-line:import-blacklist
 import 'rxjs/Rx';
 import { Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { EventEmitter } from '@angular/core';
 
 @Injectable()
 export class DeviceService {
 
   rootUrl = 'http://localhost:3000/';
+ // deviceListChanged = new Subject<Device[]>();
+  headersValue = new Headers();
+  private devices: Device[] = [];
+  deviceListChanged = new EventEmitter<Device[]>();
+  onDeviceDeleted = new EventEmitter<string>();
 
   constructor(private http: Http) {}
 
-  // storeServers(servers: any[]) {
-  //   const headersValue = new Headers({ 'Content-Type': this.newMethod() });
-  //   // return this.http.post('https://ng-http-fs.firebaseio.com/data.json', servers,
-  //   //   {headers: headersValue} );
-  //   return this.http.put(
-  //     'https://ng-http-fs.firebaseio.com/data.json',
-  //     servers,
-  //     { headers: headersValue }
-  //   );
-  // }
-
-
-
   getDevices(rqst: Request) {
-
+  console.log(rqst);
   if (rqst.isVoid() || rqst == null) {
-      return this.fixResponse( this.rootUrl + 'devices');
+      return this.fixResponse( this.rootUrl + 'devices/');
   }
   if (rqst.id != null) {
     return this.fixResponse( this.rootUrl + 'devices/' + rqst.id);
   }
-  // if (rqst.name != null) {
-  //   if (rqst.type != null) {
-  //     return this.fixResponse('http://localhost:1214/devices/' + rqst.id + '/' + rqst.type);
-  //   }
-  //  return this.fixResponse('http://localhost:1214/devices/' + rqst.name );
-  // }else {
-  //   return this.fixResponse('http://localhost:1214/devices/null/' + rqst.type );
-  // }
+  if (rqst.name != null) {
+    if (rqst.type != null) {
+      return this.fixResponse(  this.rootUrl + 'devices/null/' + rqst.name + '/' + rqst.type);
+    }
+   return this.fixResponse( this.rootUrl + 'devices/null/' + rqst.name + '/null' );
+  }else {
+    return this.fixResponse( this.rootUrl + 'devices/null/null/' + rqst.type );
+  }
 }
-  update(device: Device) {
-    const ruta = this.rootUrl + 'devices/' + device._id;
-    const body = device;
-    console.log(ruta);
-    console.log(body);
-    console.log('==========> respuesta del put');
-    return this.http.put( ruta , body )
+
+
+update(device: Device) {
+    //  const headersValue = new Headers({ 'Content-Type': 'application/json' });
+    // headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    this.headersValue.append('Content-Type', 'application/json');
+    const resultado =  this.http.put(
+        this.rootUrl + 'devices/' + device._id,
+        JSON.stringify(device),
+       {headers: this.headersValue} )
+      .map((response: Response) => {
+        console.log('==========> respuesta del put');
+        console.log(response);
+        return response.json();
+      })
+      .catch((error: Response) => {
+        console.log('ERROR');
+        return Observable.throw('Something went wrong');
+      });
+
+      this.deviceListChanged.emit(this.devices);
+      return resultado;
+
+
+  }
+createOne(device: Device) {
+  this.headersValue.append('Content-Type', 'application/json');
+  return this.http.post(
+    this.rootUrl + 'devices/new/',
+    JSON.stringify(device),
+       {headers: this.headersValue})
     .map((response: Response) => {
-      console.log('==========> respuesta del put');
-      console.log(response);
-      return response.json();
-    } )
-    .catch((error: Response) => {
+        console.log('==========> respuesta del POST');
+        console.log(response);
+        return response.json();
+      }
+    ).catch( (error: Response) => {
       console.log('ERROR');
       return Observable.throw('Something went wrong');
-
     });
+}
 
-  }
-
-  delete () {
-
-  }
+deleteOne(request: Request) {
+  this.headersValue.append('Content-Type', 'application/json');
+    return this.http.delete(
+       this.rootUrl + 'devices/' + request.id,
+       {headers: this.headersValue} )
+      .map((response: Response) => {
+        console.log('==========> respuesta del put');
+        console.log(response);
+        this.onDeviceDeleted.emit(request.id);
+        return response.json();
+      })
+      .catch((error: Response) => {
+        console.log('ERROR');
+        return Observable.throw('Something went wrong');
+      });
+}
 
   getAppName() {
-    // return this.http.get('http://localhost:1214/params')
-    // .map(
-    //   (response: Response) => {
-    //     return response.json();
-    //   }
-    // );
     return 'App default Name';
   }
 
@@ -88,6 +111,9 @@ export class DeviceService {
         if (!device.desc) { device.desc = 'DEFAULT DESCRIPTION'; }
         if (!device._id) { device._id = null; }
       }
+      this.devices = data;
+      this.deviceListChanged.next(this.devices);
+
       return data;
     })
     .catch((error: Response) => {

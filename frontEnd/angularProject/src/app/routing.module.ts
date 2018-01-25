@@ -1,3 +1,4 @@
+import { NewDeviceComponent } from './devices/new-device/new-device.component';
 import { AboutComponent } from './about/about.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -13,7 +14,7 @@ const appRoutes: Routes = [
   {path: '', redirectTo: 'devices', pathMatch: 'full' },
   { path: 'devices', component: DevicesComponent },
   { path: 'devices/edit/:id', component: EditDeviceComponent },
-  { path: 'devices/new', component: EditDeviceComponent },
+  { path: 'devices/new', component: NewDeviceComponent },
   { path: 'about', component: AboutComponent },
   { path: 'devices/:id', component: DeviceDetailComponent },
   { path: '**', component: PageNotFoundComponent }

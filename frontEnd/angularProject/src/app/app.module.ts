@@ -1,5 +1,5 @@
+import { NewDeviceComponent } from './devices/new-device/new-device.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-
 import { MaterialModule } from './material.module';
 import { AppRoutingModule } from './routing.module';
 import { SelectedItemDirective } from './shared/selected.item.directive';
@@ -8,7 +8,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { DeviceService } from './device.service';
 import { AppComponent } from './app.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { DevicesComponent } from './devices/devices-list.component';
 import { DeviceComponent } from './devices/device/device.component';
@@ -28,7 +28,8 @@ import { EditDeviceComponent } from './devices/edit-device/edit-device.component
     SelectedItemDirective,
     AboutComponent,
     EditDeviceComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    NewDeviceComponent
   ],
   imports: [
     BrowserModule,
@@ -37,6 +38,7 @@ import { EditDeviceComponent } from './devices/edit-device/edit-device.component
     BrowserAnimationsModule,
     MaterialModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     EmbedVideo.forRoot()
   ],
   providers: [DeviceService],

@@ -9,7 +9,7 @@ services:
   node-server:
     build: ../../backEnd/
     ports:
-      - 1214:3000
+      - 3000:3000
     depends_on:
       - mongo-filling
   mongo-filling:
@@ -19,6 +19,6 @@ services:
   angular-nginx:
     build: ../../frontEnd/
     ports:
-      - 1223:80
+      - 80:80
     depends_on:
       - node-server

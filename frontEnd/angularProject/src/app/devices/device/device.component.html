@@ -1,13 +1,10 @@
-<mat-card appHighlight>
-  <ng-content> </ng-content>
-
+<mat-card appHighlight [@myAwesomeAnimation]='state' >
+  <ng-content  > </ng-content>
   {{ device.type }} -- {{ device.name }} -- {{ device.desc }}
-
   <div style="float: right">
-    <button mat-icon-button matTooltip="Delete">
+    <button mat-icon-button matTooltip="Delete" (click)="onDeleteDevice()" >
       <i class="material-icons">delete</i>
     </button>
-    <!-- [routerLink]="['/devices', device._id ]" -->
     <button mat-icon-button matTooltip="Details"  [routerLink]="['/devices', device._id ]"
      (click)="testing()" >
       <i class="material-icons">remove_red_eye</i>

@@ -19,7 +19,7 @@
 /frontEnd/angularProject/!.vscode/tasks.json
 /frontEnd/angularProject/!.vscode/launch.json
 /frontEnd/angularProject/!.vscode/extensions.json
-
+/.history/
 
 # e2e
 /frontEnd/angularProject/e2e/*.js
@@ -28,3 +28,4 @@
 # System Files
 /frontEnd/angularProject/.DS_Store
 /frontEnd/angularProject/Thumbs.db
+

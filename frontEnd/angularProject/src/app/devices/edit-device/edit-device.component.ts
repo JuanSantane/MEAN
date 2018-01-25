@@ -1,4 +1,3 @@
-
 import { Subscription } from 'rxjs/Subscription';
 import { Device } from './../../shared/Device';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
@@ -36,21 +35,18 @@ export class EditDeviceComponent implements OnInit, OnDestroy {
 
 
   onSubmit() {
-    console.log(this.formData.value);
     const deviceFormObject = this.formData.value.deviceData;
-
     this.currentDevice.name = deviceFormObject.name;
     this.currentDevice.type = deviceFormObject.type;
     this.currentDevice.desc = deviceFormObject.description;
-    console.log('se va a persistir el elemento ->');
-    console.log(this.currentDevice);
-
-    this.deviceService.update(this.currentDevice);
+    this.deviceService.update(this.currentDevice)
+    .subscribe(
+      (res) => {}
+    );
 
    // this.formData.reset();
   }
   ngOnInit(): void {
-
     this.paramsSubscription = this.route.params
       .subscribe(
         (params: Params) => {
@@ -79,5 +75,11 @@ export class EditDeviceComponent implements OnInit, OnDestroy {
         type: this.currentDevice.type
       }
     });
+  }
+
+  onDelete() {
+    let rqst = new Request();
+    rqst.id = this.currentDevice._id;
+    this.deviceService.deleteOne(rqst).subscribe(res => {});
   }
 }

@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import { Device } from './../shared/Device';
 import { Component, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { DeviceService } from '../device.service';
@@ -13,14 +14,14 @@ export class DevicesComponent implements OnInit {
   appName = this.deviceService.getAppName();
   queryRqst: Request = new Request();
   devices: Device[] = [ new Device('DEFAULT_ID', 'DEFAULT_NAME', 'DEFAULT_TYPE', 'DEFAULT_DESCRIPTION') ];
-   @Output() deviceSelected = new EventEmitter<Device>();
+  @Output() deviceSelected = new EventEmitter<Device>();
+  private subscription: Subscription;
 
   constructor(private deviceService: DeviceService) {}
 
   onGetDevices(event) {
     if (event == null || (event != null && event.keyCode === 13) ||
     this.queryRqst.isVoid()) {
-      console.log(this.queryRqst);
       this.fixRequest();
       this.deviceService.getDevices(this.queryRqst)
       .subscribe(
@@ -32,6 +33,8 @@ export class DevicesComponent implements OnInit {
       );
     }
   }
+
+
   fixRequest() {
   (this.queryRqst.name != null && this.queryRqst.name.trim() === '' )
   ? this.queryRqst.name = null
@@ -44,6 +47,13 @@ export class DevicesComponent implements OnInit {
   }
   ngOnInit() {
     this.onGetDevices(null);
+    this.subscription =  this.deviceService.onDeviceDeleted
+      .subscribe(
+        (deviceId: string) => {
+          console.log('item with id = ' + deviceId + ' was removed');
+          this.devices = this.removeItemById(this.devices, deviceId);
+        }
+      );
   }
 
   getUrlImage(deviceType: string) {
@@ -59,4 +69,8 @@ export class DevicesComponent implements OnInit {
   ondeviceSelected(deviceSelected: Device) {
      console.log(deviceSelected);
   }
+
+  removeItemById(array, id) {
+    return array.filter(e => e._id !== id);
+}
 }

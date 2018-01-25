@@ -1,0 +1,59 @@
+<div class="container">
+  <form [formGroup]="newDeviceForm" (ngSubmit)="onSubmit()">
+    <div formGroupName="deviceData">
+      <div class="form-group">
+        <mat-form-field>
+          <mat-select placeholder="Device Type" formControlName="type">
+            <mat-option *ngFor="let type of deviceTypes" [value]="type">
+              {{ type }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br>
+        <mat-form-field>
+          <input matInput type="text" placeholder="Device Name" formControlName="name">
+        </mat-form-field>
+        <!-- <mat-error *ngIf="newDeviceForm.get('deviceData.name').errors['required']">
+            <p> This field is needed </p>
+          </mat-error> -->
+        <span *ngIf="!newDeviceForm.get('deviceData.type').valid && newDeviceForm.get('deviceData.type').touched" class="help-block">
+          <!-- <span *ngIf="newDeviceForm.get('deviceData.username').errors['nameIsForbidden']">This name is invalid!</span>
+                  <span *ngIf="newDeviceForm.get('deviceData.username').errors['required']">This field is required!</span> -->
+        </span>
+        <mat-error *ngIf="newDeviceForm.get('deviceData.name').errors">
+          <span *ngIf="newDeviceForm.get('deviceData.name').errors['nameIsForbidden']">
+            name Is Forbidden
+          </span>
+          <span *ngIf="newDeviceForm.get('deviceData.name').errors['minlength']">
+            minlength error => {{ getJson(newDeviceForm.get('deviceData.name').errors['minlength']) }}
+          </span>
+          <span *ngIf="newDeviceForm.get('deviceData.name').errors['required'] && newDeviceForm.get('deviceData.name').touched">
+            this field is required
+          </span>
+          <span *ngIf="newDeviceForm.get('deviceData.name').errors['pattern'] && newDeviceForm.get('deviceData.name').touched">
+            the pattern needed is "{{ newDeviceForm.get('deviceData.type').value}}-" at the start without blank characters.
+          </span>
+
+        </mat-error>
+        <br>
+        <mat-form-field>
+          <textarea matInput placeholder="Device description" matTextareaAutosize matAutosizeMinRows="2" matAutosizeMaxRows="5" formControlName="description"></textarea>
+        </mat-form-field>
+        <mat-error *ngIf="newDeviceForm.get('deviceData.description').errors">
+          <span *ngIf="newDeviceForm.get('deviceData.description').errors['required'] && newDeviceForm.get('deviceData.description').touched">
+            description field is required
+          </span>
+          <span *ngIf="newDeviceForm.get('deviceData.description').errors['invalidText']" >
+            "Metro" is a forbidden word
+          </span>
+          <span *ngIf="newDeviceForm.get('deviceData.description').errors['minlength']">
+            minlength error => {{ getJson(newDeviceForm.get('deviceData.description').errors['minlength']) }}
+          </span>
+        </mat-error>
+      </div>
+    </div>
+    <button mat-raised-button color="primary" [disabled]="!newDeviceForm.valid" type="submit">Save</button>
+    <button mat-raised-button color="primary" type="button" [routerLink]="['/devices']">Cancel</button>
+    <button mat-raised-button color="primary" type="button" (click)="testEvent(newDeviceForm.get('deviceData.name').errors)"  >TEST</button>
+  </form>
+</div>
