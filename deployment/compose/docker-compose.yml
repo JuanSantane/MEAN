@@ -19,6 +19,6 @@ services:
   angular-nginx:
     build: ../../frontEnd/
     ports:
-      - 80:80
+      - 1223:80
     depends_on:
       - node-server

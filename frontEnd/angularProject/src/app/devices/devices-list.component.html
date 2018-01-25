@@ -15,22 +15,10 @@
         </button>
       </div>
 
-      <button mat-mini-fab color="primary" matTooltip="New" [routerLink]="['/devices/new/']">
+      <button mat-mini-fab color="primary" type="button" matTooltip="New" [routerLink]="['/devices/new/']">
         <i class="material-icons">add</i>
       </button>
 
-
-      <!-- <button mat-button  (click)="onGetDevices()">get Devices</button> -->
-
-      <!-- <div>
-        Filtering by:
-        <div *ngIf="queryRqst.name">
-          name: {{queryRqst.name}}
-        </div>
-        <div *ngIf="queryRqst.type">
-          Type: {{queryRqst.type}}
-        </div>
-      </div> -->
       <br>
       <app-device *ngFor="let deviceItem of devices" [device]="deviceItem" (deviceSelected)="ondeviceSelected($event)">
         <img [src]="getUrlImage(deviceItem.type)" height="60" width="60">
