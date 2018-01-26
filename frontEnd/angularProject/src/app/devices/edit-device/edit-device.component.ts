@@ -55,7 +55,6 @@ export class EditDeviceComponent implements OnInit, OnDestroy {
         .subscribe(
           (device: any ) =>  {
             this.currentDevice = device;
-            console.log(this.currentDevice);
             this.fillData();
           },
           (error) => { console.log(error); }
@@ -80,6 +79,10 @@ export class EditDeviceComponent implements OnInit, OnDestroy {
   onDelete() {
     let rqst = new Request();
     rqst.id = this.currentDevice._id;
-    this.deviceService.deleteOne(rqst).subscribe(res => {});
+    this.deviceService.deleteOne(rqst).subscribe(res => {
+      if (res.ok === 1) {
+        this.router.navigate(['/devices']);
+      }
+    });
   }
 }

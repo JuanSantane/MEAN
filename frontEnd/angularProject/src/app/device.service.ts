@@ -41,15 +41,12 @@ export class DeviceService {
 
 
 update(device: Device) {
-    //  const headersValue = new Headers({ 'Content-Type': 'application/json' });
-    // headers.append('Content-Type', 'application/x-www-form-urlencoded');
     this.headersValue.append('Content-Type', 'application/json');
     const resultado =  this.http.put(
         this.rootUrl + 'devices/' + device._id,
         JSON.stringify(device),
        {headers: this.headersValue} )
       .map((response: Response) => {
-        console.log('==========> respuesta del put');
         console.log(response);
         return response.json();
       })
@@ -70,7 +67,6 @@ createOne(device: Device) {
     JSON.stringify(device),
        {headers: this.headersValue})
     .map((response: Response) => {
-        console.log('==========> respuesta del POST');
         console.log(response);
         return response.json();
       }
@@ -86,7 +82,6 @@ deleteOne(request: Request) {
        this.rootUrl + 'devices/' + request.id,
        {headers: this.headersValue} )
       .map((response: Response) => {
-        console.log('==========> respuesta del put');
         console.log(response);
         this.onDeviceDeleted.emit(request.id);
         return response.json();

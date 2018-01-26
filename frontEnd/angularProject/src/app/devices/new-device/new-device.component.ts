@@ -34,7 +34,6 @@ export class NewDeviceComponent implements OnInit {
       const validatorsForDeviceName = [this.forbiddenNamesValidator.bind(this), Validators.required];
       const validatorsForDeviceDescription = [];
       const asyncValidatorsForDeviceDescription = [];
-      console.log(type + ' selected');
 
       switch (type) {
         case 'MRA': {
@@ -77,17 +76,11 @@ export class NewDeviceComponent implements OnInit {
     console.log(device);
     this.deviceService.createOne(device).subscribe(
       (res: any) => {
-        console.log(res);
-        console.log('Respuesta del POST --> ' + JSON.stringify(res));
+
         this.router.navigate(['/devices/', res.insertedId ]);
     });
 
     // this.newDeviceForm.reset();
-  }
-
-  onAddHobby() {
-    // const control = new FormControl(null, Validators.required);
-    // (<FormArray>this.signupForm.get('hobbies')).push(control);
   }
 
   forbiddenNamesValidator(control: FormControl): {[s: string]: boolean} {

@@ -27,8 +27,9 @@
 
       <p *ngIf="!DeviceData.valid && DeviceData.touched">Device data is invalid</p>
 
-      <button class="btn btn-primary" type="submit" [disabled]="!formData.valid">Submit</button>
+      <button class="btn btn-primary" type="submit" [disabled]="!formData.valid">SAVE</button>
       <button class="btn btn-primary" (click)="onDelete()" type="button">REMOVE</button>
+      <button class="btn btn-primary" [routerLink]="['/devices']" type="button">BACK</button>
     </form>
   </div>
 </div>

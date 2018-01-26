@@ -27,7 +27,6 @@ export class DevicesComponent implements OnInit {
       .subscribe(
         (devices: any[] ) =>  {
           this.devices = devices;
-          console.log(devices);
         },
         (error) => { console.log(error); }
       );
@@ -66,9 +65,6 @@ export class DevicesComponent implements OnInit {
    }
   }
 
-  ondeviceSelected(deviceSelected: Device) {
-     console.log(deviceSelected);
-  }
 
   removeItemById(array, id) {
     return array.filter(e => e._id !== id);

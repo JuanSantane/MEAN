@@ -22,7 +22,6 @@ module.exports = function(app, db) {
   app.put("/devices/:id", (req, res) => {
     const id = new ObjectID.createFromHexString(req.params.id);
     const newObject = req.body;
-    console.log(newObject);
     db.collection("devices")
       .update(
         { _id: id },
@@ -94,4 +93,19 @@ module.exports = function(app, db) {
         });
     }
   });
+
+
+  // VALIDATE IF A NAME IS AVAILABLE TO SET TO NEW DEVICE
+  app.get("/devices/validateDeviceName/:name", (req, res) => {
+    console.log(req.params);
+    db.collection("devices")
+      .findOne({ name: req.params.name},
+        function(err, result) {
+          console.log(result);
+          response = result === null;
+          res.json(response);
+        }
+      );
+  });
+
 };

@@ -43,8 +43,6 @@ app.use((request, response, next) => {
   // to the API (e.g. in case you use sessions)
   response.setHeader('Access-Control-Allow-Credentials', true);
   // Pass to next layer of middleware
-  console.log("configurando el response");
-  console.log(response.getHeaders());
   next();
 });
 

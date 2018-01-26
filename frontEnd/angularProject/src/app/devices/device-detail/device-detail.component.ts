@@ -32,7 +32,6 @@ export class DeviceDetailComponent implements OnInit, OnDestroy {
         .subscribe(
           (device: any ) =>  {
             this.currentDevice = device;
-            console.log(this.currentDevice);
           },
           (error) => { console.log(error); }
         ); }

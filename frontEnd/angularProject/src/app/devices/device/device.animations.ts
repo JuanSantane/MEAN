@@ -31,5 +31,6 @@ export const removingDevice = trigger('myAwesomeAnimation', [
   //   style({opacity: 1, transform: 'translateY(35px)',  offset: 0.5}),
   //   style({opacity: 1, transform: 'translateY(0)',     offset: 1.0})
   // ])
-))
+)),
+transition('normal => large', animate('1000ms ease-in'))
 ]);

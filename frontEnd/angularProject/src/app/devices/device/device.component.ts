@@ -26,9 +26,6 @@ export class DeviceComponent implements OnInit {
 
   ngOnInit() {}
 
-  testing() {
-   // console.log(this.device);
-  }
 
   onDeleteDevice() {
     this.animateMe();
