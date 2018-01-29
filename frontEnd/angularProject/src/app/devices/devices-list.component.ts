@@ -1,8 +1,14 @@
+import { Observable } from 'rxjs/Observable';
+import { Response } from '@angular/http';
 import { Subscription } from 'rxjs/Subscription';
 import { Device } from './../shared/Device';
 import { Component, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { DeviceService } from '../device.service';
 import { Request } from '../shared/request';
+// tslint:disable-next-line:import-blacklist
+import { Subscriber } from 'rxjs';
+import * as Rx from 'rxjs/Rx';
+import { groupBy, mergeMap, concatMap, flatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-devices-list',
@@ -11,12 +17,11 @@ import { Request } from '../shared/request';
 })
 export class DevicesComponent implements OnInit {
 
-  appName = this.deviceService.getAppName();
   queryRqst: Request = new Request();
   devices: Device[] = [ new Device('DEFAULT_ID', 'DEFAULT_NAME', 'DEFAULT_TYPE', 'DEFAULT_DESCRIPTION') ];
   @Output() deviceSelected = new EventEmitter<Device>();
   private subscription: Subscription;
-
+  appName: Observable<string>;
   constructor(private deviceService: DeviceService) {}
 
   onGetDevices(event) {
@@ -45,6 +50,7 @@ export class DevicesComponent implements OnInit {
 
   }
   ngOnInit() {
+
     this.onGetDevices(null);
     this.subscription =  this.deviceService.onDeviceDeleted
       .subscribe(
@@ -53,7 +59,31 @@ export class DevicesComponent implements OnInit {
           this.devices = this.removeItemById(this.devices, deviceId);
         }
       );
-  }
+    this.appName = this.deviceService.getAppName();
+    // // //emit every click
+    // const source = Observable.of(1, 2, 3);
+    // // //if another click comes within 3s, message will not be emitted
+    // const example = source.switchMap(val =>
+    //   Rx.Observable.fromEvent(document.getElementById('inputName'), 'keyup')
+    //  .mapTo('buscando por ' + this.queryRqst.name ));
+    // // //(click)...3s...'Hello I made it!'...(click)...2s(click)...
+
+    // const subscribe = example.subscribe(val => console.log(val));
+
+
+
+    // GROUP-BY
+    this.deviceService.getDevices(new Request())
+    .mergeMap(obs => Observable.from(obs))
+    .groupBy((device: Device) => device.type)
+    .mergeMap(group => group.toArray())
+    .subscribe(val => {
+      console.log(val);
+    });
+
+
+
+    }
 
   getUrlImage(deviceType: string) {
    if (deviceType === 'MRA') {
@@ -69,4 +99,7 @@ export class DevicesComponent implements OnInit {
   removeItemById(array, id) {
     return array.filter(e => e._id !== id);
 }
+
+
+
 }

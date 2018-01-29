@@ -1,13 +1,16 @@
 import { Device } from './shared/Device';
 import { Request } from './shared/request';
 import { Injectable } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http, Headers, Response } from '@angular/http';
 import { Subject } from 'rxjs/Subject';
 // tslint:disable-next-line:import-blacklist
 import 'rxjs/Rx';
-import { Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { EventEmitter } from '@angular/core';
+import { map, retry, switchMap } from 'rxjs/operators';
+
+
+
 
 @Injectable()
 export class DeviceService {
@@ -18,6 +21,7 @@ export class DeviceService {
   private devices: Device[] = [];
   deviceListChanged = new EventEmitter<Device[]>();
   onDeviceDeleted = new EventEmitter<string>();
+  app_name_KEY = 'app_name';
 
   constructor(private http: Http) {}
 
@@ -85,15 +89,20 @@ deleteOne(request: Request) {
         console.log(response);
         this.onDeviceDeleted.emit(request.id);
         return response.json();
-      })
-      .catch((error: Response) => {
+      }).catch((error: Response) => {
         console.log('ERROR');
         return Observable.throw('Something went wrong');
       });
 }
 
-  getAppName() {
-    return 'App default Name';
+  getAppName(): Observable<string> {
+
+    return this.http.get(this.rootUrl + 'params/' + this.app_name_KEY)
+    .map((response: Response) => {
+      const param = response.json();
+      return param.value;
+    })
+    .retry(15);
   }
 
   fixResponse(route: string) {
