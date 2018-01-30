@@ -43,4 +43,8 @@ export class DeviceComponent implements OnInit {
   sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
+
+  announceView() {
+    this.deviceService.announceView(this.device);
+  }
 }

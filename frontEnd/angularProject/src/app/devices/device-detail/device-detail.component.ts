@@ -33,7 +33,7 @@ export class DeviceDetailComponent implements OnInit, OnDestroy {
           (device: any ) =>  {
             this.currentDevice = device;
           },
-          (error) => { console.log(error); }
+          (error) => { console.log(error); console.log('----------------------------------------'); }
         ); }
       );
   }

@@ -5,8 +5,7 @@
     <button mat-icon-button matTooltip="Delete" (click)="onDeleteDevice()" >
       <i class="material-icons">delete</i>
     </button>
-    <button mat-icon-button matTooltip="Details"  [routerLink]="['/devices', device._id ]"
-      >
+    <button mat-icon-button matTooltip="Details" (click)="announceView()" [routerLink]="['/devices', device._id ]">
       <i class="material-icons">remove_red_eye</i>
     </button>
     <button mat-icon-button matTooltip="More" [matMenuTriggerFor]="menu">
@@ -14,7 +13,7 @@
     </button>
     <div class="nav navbar-nav navbar-right">
       <mat-menu #menu="matMenu">
-        <button mat-menu-item [routerLink]="['/devices/edit', device._id]" >
+        <button mat-menu-item (click)="announceView()" [routerLink]="['/devices/edit', device._id]" >
           <mat-icon>edit</mat-icon>
           <span>Edit details</span>
         </button>

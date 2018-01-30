@@ -1,3 +1,5 @@
+import { FormControl } from '@angular/forms';
+import { LastViewsByDeviceType } from './shared/lastViews';
 import { Device } from './shared/Device';
 import { Request } from './shared/request';
 import { Injectable } from '@angular/core';
@@ -6,8 +8,8 @@ import { Subject } from 'rxjs/Subject';
 // tslint:disable-next-line:import-blacklist
 import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
-import { EventEmitter } from '@angular/core';
-import { map, retry, switchMap } from 'rxjs/operators';
+import { EventEmitter, OnInit } from '@angular/core';
+import { map, retry, switchMap, combineLatest } from 'rxjs/operators';
 
 
 
@@ -19,11 +21,29 @@ export class DeviceService {
  // deviceListChanged = new Subject<Device[]>();
   headersValue = new Headers();
   private devices: Device[] = [];
-  deviceListChanged = new EventEmitter<Device[]>();
+  deviceListChanged = new Subject<Device[]>();
   onDeviceDeleted = new EventEmitter<string>();
   app_name_KEY = 'app_name';
+  combineLatestViews: LastViewsByDeviceType;
 
-  constructor(private http: Http) {}
+  private mraSubject = new Subject<string>();
+  private lsrSubject = new Subject<string>();
+  private vocSubject = new Subject<string>();
+
+  public combineLatest: Observable<LastViewsByDeviceType> = this.mraSubject
+    .combineLatest(this.lsrSubject, this.vocSubject,
+      function(s1, s2, s3){ return new LastViewsByDeviceType(s1, s2, s3); });
+
+  constructor(private http: Http) {
+    this.combineLatest
+      .subscribe((combine: LastViewsByDeviceType) => {
+        this.combineLatestViews = combine;
+      });
+    this.mraSubject.next('--');
+    this.lsrSubject.next('--');
+    this.vocSubject.next('--');
+
+  }
 
   getDevices(rqst: Request) {
   console.log(rqst);
@@ -59,7 +79,7 @@ update(device: Device) {
         return Observable.throw('Something went wrong');
       });
 
-      this.deviceListChanged.emit(this.devices);
+      this.deviceListChanged.next(this.devices);
       return resultado;
 
 
@@ -88,6 +108,8 @@ deleteOne(request: Request) {
       .map((response: Response) => {
         console.log(response);
         this.onDeviceDeleted.emit(request.id);
+        this.devices = this.devices.filter(e => e._id !== request.id);
+        this.deviceListChanged.next( this.devices );
         return response.json();
       }).catch((error: Response) => {
         console.log('ERROR');
@@ -121,12 +143,37 @@ deleteOne(request: Request) {
       return data;
     })
     .catch((error: Response) => {
+      console.log(error);
       return Observable.throw('Something went wrong');
     });
 
   }
 
+  public announceView(device: Device) {
+    console.log('Se ha visitado el dispositivo ' + JSON.stringify(device));
+    switch (device.type) {
+      case 'MRA': {
+        this.mraSubject.next(device._id);
+        break;
+      }
+      case 'LSR': {
+        this.lsrSubject.next(device._id);
+        break;
+      }
+      case 'VOC': {
+        this.vocSubject.next(device._id);
+        break;
+     }
+   }
+  }
 
+  getLatestViews(): LastViewsByDeviceType {
+    return this.combineLatestViews;
+  }
+
+  getDevicesByKeyword(keyword: string) {
+    return this.getDevices(new Request());
+  }
 
 
 }

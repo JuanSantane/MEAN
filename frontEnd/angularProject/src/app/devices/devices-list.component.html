@@ -1,29 +1,50 @@
 <div class="container">
-  <div class="row">
-      <!-- class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2" -->
-    <div >
-      <div class="center">
+  <div>
+    <div  class="row" >
+      <div style="float: left" class="col-xs-2">
+        <p *ngFor="let score of scores | async">
+          {{score.type}} : {{score.count}}
+        </p>
+      </div>
+
+      <div class="center col-xs-4">
         <h1>{{ appName | async }} </h1>
         <mat-form-field>
-          <input id="inputName" matInput type="text" placeholder="Name" [(ngModel)]="queryRqst.name" (keyup)="onGetDevices($event)">
+          <input id="inputName" matInput type="text" placeholder="Name"
+           [(ngModel)]="queryRqst.name" #keywordName
+           (keyup)="onGetDevices($event, keywordName.value)">
         </mat-form-field>
         <mat-form-field>
-          <input id="inputType" matInput type="text" placeholder="type" [(ngModel)]="queryRqst.type" (keyup)="onGetDevices($event)">
+          <input id="inputType" matInput type="text" placeholder="type"
+          [(ngModel)]="queryRqst.type"  #keywordType
+          (keyup)="onGetDevices($event, keywordType.value )">
         </mat-form-field>
         <button mat-mini-fab color="primary" (click)="onGetDevices(null)" matTooltip="Search">
-            <i class="material-icons">search</i>
+          <i class="material-icons">search</i>
+        </button>
+        <button mat-mini-fab color="primary" type="button" matTooltip="New" [routerLink]="['/devices/new/']">
+          <i class="material-icons">add</i>
         </button>
       </div>
 
-      <button mat-mini-fab color="primary" type="button" matTooltip="New" [routerLink]="['/devices/new/']">
-        <i class="material-icons">add</i>
-      </button>
+      <div *ngIf="combineLatestViews" class="col-xs-2" style="float: left">
+        <strong>Last view by type</strong>
+        <p id="cl01" *ngIf="combineLatestViews.mra">
+          MRA :{{combineLatestViews.mra }}
+        </p>
+        <p id="cl02" *ngIf="combineLatestViews.lsr">
+          LSR :{{combineLatestViews.lsr }}
+        </p>
+        <p id="cl03" *ngIf="combineLatestViews.voc">
+          VOC :{{combineLatestViews.voc }}
+        </p>
+      </div>
 
-      <br>
-      <!-- (deviceSelected)="ondeviceSelected($event)" -->
-      <app-device *ngFor="let deviceItem of devices" [device]="deviceItem">
-        <img [src]="getUrlImage(deviceItem.type)" height="60" width="60">
-      </app-device>
     </div>
+    <br>
+    <!-- (deviceSelected)="ondeviceSelected($event)" -->
+    <app-device *ngFor="let deviceItem of devices" [device]="deviceItem">
+      <img [src]="getUrlImage(deviceItem.type)" height="60" width="60">
+    </app-device>
   </div>
 </div>

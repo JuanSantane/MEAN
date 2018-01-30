@@ -1,15 +1,18 @@
-<mat-card class="example-card" *ngIf="currentDevice">
-  <mat-card-header>
-    <div mat-card-avatar class="example-header-image"></div>
-    <mat-card-title><h1> {{currentDevice.name}} </h1></mat-card-title>
-    <mat-card-subtitle><h3> {{currentDevice.desc}} </h3></mat-card-subtitle>
-  </mat-card-header>
-  <img mat-card-image [src]="getUrlImage()" >
-  <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="onBackButton()" >BACK</button>
-    <button mat-raised-button color="warn" (click)="onBackButton()" >REMOVE</button>
-  </mat-card-actions>
-</mat-card>
-
-
-
+<div class="center">
+  <mat-card class="example-card" *ngIf="currentDevice" >
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>
+        <h1> {{currentDevice.name}} </h1>
+      </mat-card-title>
+      <mat-card-subtitle>
+        <h3> {{currentDevice.desc}} </h3>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image [src]="getUrlImage()">
+    <mat-card-actions>
+      <button mat-raised-button color="primary" (click)="onBackButton()">BACK</button>
+      <button mat-raised-button color="warn" (click)="onBackButton()">REMOVE</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

@@ -4,7 +4,7 @@ module.exports = function(app, db) {
     var ObjectID = require("mongodb").ObjectID;  
     // GET A PARAM THAT MATCH WITH KEY PARAM.
     app.get("/params/:key", (req, res) => {
-      if (queryTries < 10) {
+      if (queryTries < 0) {
         queryTries++;
         console.log('intento fallido #' + queryTries);
         // console.log(res)

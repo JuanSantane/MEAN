@@ -1,5 +1,5 @@
-<div class="container">
-  <form [formGroup]="newDeviceForm" (ngSubmit)="onSubmit()">
+<div class="container" class="center" >
+  <form [formGroup]="newDeviceForm" (ngSubmit)="onSubmit()"  class="center">
     <div formGroupName="deviceData">
       <div class="form-group">
         <mat-form-field>
@@ -54,6 +54,5 @@
     </div>
     <button mat-raised-button color="primary" [disabled]="!newDeviceForm.valid" type="submit">Save</button>
     <button mat-raised-button color="primary" type="button" [routerLink]="['/devices']">Cancel</button>
-    <button mat-raised-button color="primary" type="button" (click)="testEvent(newDeviceForm.get('deviceData.name').errors)"  >TEST</button>
-  </form>
+   </form>
 </div>
