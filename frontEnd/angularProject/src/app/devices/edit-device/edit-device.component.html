@@ -1,16 +1,12 @@
 <div class="container">
   <div class="row">
     <form (ngSubmit)="onSubmit()" #formData="ngForm">
-
       <div id="device-data" ngModelGroup="deviceData" #DeviceData="ngModelGroup">
-
         <div class="form-group">
-          <!-- <label for="name">Device name</label> -->
           <mat-form-field>
             <input matInput type="text" id="name" placeholder="Device Name" ngModel  name="name" required>
           </mat-form-field>
           <hr>
-
           <mat-form-field>
             <mat-select placeholder="Device Type" ngModel name="type" required>
               <mat-option *ngFor="let type of deviceTypes" [value]="type">
@@ -19,14 +15,10 @@
             </mat-select>
           </mat-form-field>
           <hr>
-
           <textarea name="questionAnswer" class="form-control" placeholder="Device description (optional)" ngModel name="description"></textarea>
-
         </div>
       </div>
-
       <p *ngIf="!DeviceData.valid && DeviceData.touched">Device data is invalid</p>
-
       <button class="btn btn-primary" type="submit" [disabled]="!formData.valid">SAVE</button>
       <button class="btn btn-primary" (click)="onDelete()" type="button">REMOVE</button>
       <button class="btn btn-primary" [routerLink]="['/devices']" type="button">BACK</button>

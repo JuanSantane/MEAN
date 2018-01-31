@@ -63,6 +63,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
       this.queryRqst.isVoid()
     ) {
       this.fixRequest();
+      console.log(this.queryRqst);
       this.deviceService.getDevices(this.queryRqst).subscribe(
         (devices: any[]) => {
           this.devices = devices;
@@ -84,6 +85,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
       : (this.queryRqst.type = this.queryRqst.type);
   }
   ngOnInit() {
+    // S5-combine-latest
     this.combineLatestViews = this.deviceService.getLatestViews();
     console.log('los views --> ' + JSON.stringify(this.combineLatestViews));
     this.onGetDevices(null, '');
@@ -93,9 +95,10 @@ export class DevicesComponent implements OnInit, OnDestroy {
         this.devices = this.removeItemById(this.devices, deviceId);
       }
     );
+    // S5-retry, async
     this.appName = this.deviceService.getAppName();
 
-    // GROUP-BY
+    // S5-GROUP-BY, async
     this.groupBySubscription = this.deviceService.deviceListChanged.subscribe(
       (deviceList: Device[]) => {
         this.scores = Observable.from(deviceList)
@@ -107,6 +110,7 @@ export class DevicesComponent implements OnInit, OnDestroy {
       }
     );
 
+    // S5-Debounce, switchMap
     this.keywordSubject
       .debounceTime(2000)
       .switchMap( keyword => this.deviceService.getDevicesByKeyword(keyword))
@@ -115,8 +119,11 @@ export class DevicesComponent implements OnInit, OnDestroy {
     });
 
 
-
-
+    this.deviceService.deviceListChanged.subscribe(
+      (devices: Device[]) => {
+        this.devices = devices;
+      }
+    );
 
   }
 

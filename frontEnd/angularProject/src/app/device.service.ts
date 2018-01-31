@@ -17,8 +17,9 @@ import { map, retry, switchMap, combineLatest } from 'rxjs/operators';
 @Injectable()
 export class DeviceService {
 
-  rootUrl = 'http://localhost:3000/';
- // deviceListChanged = new Subject<Device[]>();
+  // rootUrl = 'http://localhost:3000/';
+  rootUrl = 'http://192.168.188.67:3000/';
+  // deviceListChanged = new Subject<Device[]>();
   headersValue = new Headers();
   private devices: Device[] = [];
   deviceListChanged = new Subject<Device[]>();
@@ -46,36 +47,40 @@ export class DeviceService {
   }
 
   getDevices(rqst: Request) {
-  console.log(rqst);
-  if (rqst.isVoid() || rqst == null) {
-      return this.fixResponse( this.rootUrl + 'devices/');
-  }
-  if (rqst.id != null) {
-    return this.fixResponse( this.rootUrl + 'devices/' + rqst.id);
-  }
-  if (rqst.name != null) {
-    if (rqst.type != null) {
-      return this.fixResponse(  this.rootUrl + 'devices/null/' + rqst.name + '/' + rqst.type);
+    console.log(rqst);
+    if (rqst.isVoid() || rqst == null) {
+        return this.fixResponse( this.rootUrl + 'devices/');
     }
-   return this.fixResponse( this.rootUrl + 'devices/null/' + rqst.name + '/null' );
-  }else {
-    return this.fixResponse( this.rootUrl + 'devices/null/null/' + rqst.type );
-  }
+    if (rqst.id != null) {
+      return this.fixResponse( this.rootUrl + 'devices/' + rqst.id);
+    }
+    if (rqst.name != null) {
+      if (rqst.type != null) {
+        return this.fixResponse(  this.rootUrl + 'devices/null/' + rqst.name + '/' + rqst.type);
+      }
+    return this.fixResponse( this.rootUrl + 'devices/null/' + rqst.name + '/null' );
+    }else {
+      return this.fixResponse( this.rootUrl + 'devices/null/null/' + rqst.type );
+    }
 }
 
 
 update(device: Device) {
+    this.headersValue = new Headers();
     this.headersValue.append('Content-Type', 'application/json');
+    console.log('device ID ==> ' +  JSON.stringify(device._id));
+    console.log(JSON.stringify(device));
     const resultado =  this.http.put(
         this.rootUrl + 'devices/' + device._id,
         JSON.stringify(device),
-       {headers: this.headersValue} )
+        {headers: this.headersValue}
+      )
       .map((response: Response) => {
         console.log(response);
         return response.json();
       })
       .catch((error: Response) => {
-        console.log('ERROR');
+        console.log(error);
         return Observable.throw('Something went wrong');
       });
 
@@ -85,6 +90,7 @@ update(device: Device) {
 
   }
 createOne(device: Device) {
+  this.headersValue = new Headers();
   this.headersValue.append('Content-Type', 'application/json');
   return this.http.post(
     this.rootUrl + 'devices/new/',
@@ -101,6 +107,7 @@ createOne(device: Device) {
 }
 
 deleteOne(request: Request) {
+  this.headersValue = new Headers();
   this.headersValue.append('Content-Type', 'application/json');
     return this.http.delete(
        this.rootUrl + 'devices/' + request.id,
@@ -118,13 +125,13 @@ deleteOne(request: Request) {
 }
 
   getAppName(): Observable<string> {
-
+    // S5-retry
     return this.http.get(this.rootUrl + 'params/' + this.app_name_KEY)
     .map((response: Response) => {
       const param = response.json();
       return param.value;
     })
-    .retry(15);
+    .retry(5);
   }
 
   fixResponse(route: string) {
@@ -172,7 +179,24 @@ deleteOne(request: Request) {
   }
 
   getDevicesByKeyword(keyword: string) {
-    return this.getDevices(new Request());
+    if (keyword === '') { return this.getDevices(new Request()); }
+    return this.http.get( this.rootUrl + 'devices/keyword/' + keyword )
+    .map((response: Response) => {
+      const data = response.json();
+      for (const device of data) {
+        if (!device.type) { device.type = 'DEFAULT TYPE'; }
+        if (!device.name) { device.name = 'DEFAULT NAME'; }
+        if (!device.desc) { device.desc = 'DEFAULT DESCRIPTION'; }
+        if (!device._id) { device._id = null; }
+      }
+      this.devices = data;
+      this.deviceListChanged.next(this.devices);
+      return data;
+    })
+    .catch((error: Response) => {
+      console.log(error);
+      return Observable.throw('Something went wrong');
+    });
   }
 
 

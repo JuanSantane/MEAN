@@ -41,7 +41,9 @@ export class EditDeviceComponent implements OnInit, OnDestroy {
     this.currentDevice.desc = deviceFormObject.description;
     this.deviceService.update(this.currentDevice)
     .subscribe(
-      (res) => {}
+      (res) => {
+        // console.log(res);
+      }
     );
 
    // this.formData.reset();

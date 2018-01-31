@@ -22,6 +22,13 @@ module.exports = function(app, db) {
   app.put("/devices/:id", (req, res) => {
     const id = new ObjectID.createFromHexString(req.params.id);
     const newObject = req.body;
+    console.log('nuevo dispositivo a actualizar --> ');
+    console.log(id);
+    console.log(newObject);
+    if(!newObject._id) { 
+      res.status(400);
+      return;
+    }
     db.collection("devices")
       .update(
         { _id: id },
@@ -29,10 +36,8 @@ module.exports = function(app, db) {
         { upsert: false, multi: false },
         function(err, result) {
           if (err) throw err;
-          db.collection("devices").findOne({ _id: id }, function(err, result) {
-            res.json(result);
-            console.log(result.result);
-          });
+          // console.log(result);
+          res.json(newObject);
         }
       );
   });
@@ -106,6 +111,18 @@ module.exports = function(app, db) {
           res.json(response);
         }
       );
+  });
+
+  // GET DEVICE BY KEYWORD
+  app.get("/devices/keyword/:keyword", (req, res) => {
+    console.log(req.params);    
+    db.collection('devices')
+      .find( { $text: { $search: req.params.keyword } } )
+        .toArray(function(err, result) {
+          if (err) throw err;
+          res.json(result);
+          console.log('==> ' + result.length + ' documents found');
+        });
   });
 
 };

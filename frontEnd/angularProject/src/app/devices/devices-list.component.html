@@ -1,45 +1,69 @@
 <div class="container">
   <div>
-    <div  class="row" >
-      <div style="float: left" class="col-xs-2">
-        <p *ngFor="let score of scores | async">
-          {{score.type}} : {{score.count}}
-        </p>
+    <div class="row">
+
+      <div style="float: left" class="col-xs-3 center-text">
+        <mat-card style="border-radius: 30px">
+          <mat-card-header>
+            <h4><strong>Scores by type</strong></h4>
+          </mat-card-header>
+          <mat-card-content>
+            <p *ngFor="let score of scores | async">
+              {{score.type}} : {{score.count}}
+            </p>
+          </mat-card-content>
+        </mat-card>
       </div>
 
-      <div class="center col-xs-4">
-        <h1>{{ appName | async }} </h1>
-        <mat-form-field>
-          <input id="inputName" matInput type="text" placeholder="Name"
-           [(ngModel)]="queryRqst.name" #keywordName
-           (keyup)="onGetDevices($event, keywordName.value)">
-        </mat-form-field>
-        <mat-form-field>
-          <input id="inputType" matInput type="text" placeholder="type"
-          [(ngModel)]="queryRqst.type"  #keywordType
-          (keyup)="onGetDevices($event, keywordType.value )">
-        </mat-form-field>
-        <button mat-mini-fab color="primary" (click)="onGetDevices(null)" matTooltip="Search">
-          <i class="material-icons">search</i>
-        </button>
-        <button mat-mini-fab color="primary" type="button" matTooltip="New" [routerLink]="['/devices/new/']">
-          <i class="material-icons">add</i>
-        </button>
+      <div class="center col-xs-4 center-text">
+        <div class="filter-center">
+          <mat-card style="border-radius: 20px">
+            <mat-card-header>
+              <div mat-card-avatar></div>
+              <mat-card-title>
+                <h2><strong>{{ appName | async }}</strong></h2>
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <mat-form-field>
+                <input id="inputName" matInput type="text" placeholder="filter by keyword" [(ngModel)]="queryRqst.name" #keywordName (keyup)="onGetDevices($event, keywordName.value)">
+              </mat-form-field>
+              <!-- <mat-form-field>
+                              <input id="inputType" matInput type="text" placeholder="type"
+                              [(ngModel)]="queryRqst.type"  #keywordType
+                              (keyup)="onGetDevices($event, keywordType.value )">
+                            </mat-form-field> -->
+              <br>
+              <button mat-mini-fab color="primary" (click)="onGetDevices(null)" matTooltip="Search">
+                <i class="material-icons">search</i>
+              </button>
+              <button mat-mini-fab color="primary" type="button" matTooltip="New" [routerLink]="['/devices/new/']">
+                <i class="material-icons">add</i>
+              </button>
+            </mat-card-content>
+          </mat-card>
+        </div>
       </div>
 
-      <div *ngIf="combineLatestViews" class="col-xs-2" style="float: left">
-        <strong>Last view by type</strong>
-        <p id="cl01" *ngIf="combineLatestViews.mra">
-          MRA :{{combineLatestViews.mra }}
-        </p>
-        <p id="cl02" *ngIf="combineLatestViews.lsr">
-          LSR :{{combineLatestViews.lsr }}
-        </p>
-        <p id="cl03" *ngIf="combineLatestViews.voc">
-          VOC :{{combineLatestViews.voc }}
-        </p>
-      </div>
 
+      <div *ngIf="combineLatestViews" class="col-xs-3 center-text" style="float: left">
+        <mat-card style="border-radius: 30px">
+          <mat-card-header>
+            <h4><strong>Last view by type</strong></h4>
+          </mat-card-header>
+          <mat-card-content>
+            <p id="cl01" *ngIf="combineLatestViews.mra">
+              MRA :{{combineLatestViews.mra }}
+            </p>
+            <p id="cl02" *ngIf="combineLatestViews.lsr">
+              LSR :{{combineLatestViews.lsr }}
+            </p>
+            <p id="cl03" *ngIf="combineLatestViews.voc">
+              VOC :{{combineLatestViews.voc }}
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
     <br>
     <!-- (deviceSelected)="ondeviceSelected($event)" -->
