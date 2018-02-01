@@ -9,7 +9,7 @@ import { Subject } from 'rxjs/Subject';
 import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import { EventEmitter, OnInit } from '@angular/core';
-import { map, retry, switchMap, combineLatest } from 'rxjs/operators';
+import { map, retry, switchMap, combineLatest, retryWhen } from 'rxjs/operators';
 
 
 
@@ -130,8 +130,11 @@ deleteOne(request: Request) {
     .map((response: Response) => {
       const param = response.json();
       return param.value;
-    })
-    .retry(5);
+    }).retry(5);
+    // .retryWhen(errors =>
+    //   errors.do(val => console.log(`Value ${val} was too high!`))
+    //   // restart in 5 seconds
+    //   .delayWhen(val => Observable.timer(val * 1000)));
   }
 
   fixResponse(route: string) {
@@ -179,6 +182,7 @@ deleteOne(request: Request) {
   }
 
   getDevicesByKeyword(keyword: string) {
+    console.log('consultando por ==> ' + keyword);
     if (keyword === '') { return this.getDevices(new Request()); }
     return this.http.get( this.rootUrl + 'devices/keyword/' + keyword )
     .map((response: Response) => {

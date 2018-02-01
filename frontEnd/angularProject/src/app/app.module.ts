@@ -17,6 +17,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AboutComponent } from './about/about.component';
 import { EmbedVideo } from 'ngx-embed-video';
 import { EditDeviceComponent } from './devices/edit-device/edit-device.component';
+import { CanDeactivateGuard } from './devices/can-deactivate-guard.service';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,7 @@ import { EditDeviceComponent } from './devices/edit-device/edit-device.component
     ReactiveFormsModule,
     EmbedVideo.forRoot()
   ],
-  providers: [DeviceService],
+  providers: [DeviceService, CanDeactivateGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

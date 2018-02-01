@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { Device } from './../../shared/Device';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
@@ -5,20 +6,21 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { DeviceService } from '../../device.service';
 import { Request } from '../../shared/request';
+import { CanComponentDeactivate } from '../can-deactivate-guard.service';
 
 @Component({
   selector: 'app-edit-device',
   templateUrl: './edit-device.component.html',
   styleUrls: ['./edit-device.component.css']
 })
-export class EditDeviceComponent implements OnInit, OnDestroy {
-
+export class EditDeviceComponent implements OnInit, OnDestroy, CanComponentDeactivate {
 
   @ViewChild('formData') formData: NgForm;
   private paramsSubscription: Subscription;
   deviceTypes = ['LSR', 'VOC', 'MRA'];
   queryRqst = new Request();
   currentDevice: Device;
+  initialDevice: Device;
   deviceData = {
     name: '',
     type: '',
@@ -42,11 +44,9 @@ export class EditDeviceComponent implements OnInit, OnDestroy {
     this.deviceService.update(this.currentDevice)
     .subscribe(
       (res) => {
-        // console.log(res);
+        this.router.navigate(['/devices']);
       }
     );
-
-   // this.formData.reset();
   }
   ngOnInit(): void {
     this.paramsSubscription = this.route.params
@@ -58,6 +58,7 @@ export class EditDeviceComponent implements OnInit, OnDestroy {
           (device: any ) =>  {
             this.currentDevice = device;
             this.fillData();
+            this.initialDevice = this.getDeviceFromForm();
           },
           (error) => { console.log(error); }
         ); }
@@ -66,6 +67,20 @@ export class EditDeviceComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.paramsSubscription.unsubscribe();
+  }
+  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+
+    this.currentDevice = this.getDeviceFromForm();
+
+    console.log(this.initialDevice);
+    console.log(this.currentDevice);
+    const thereIsChanges = !this.deviceEquals(this.initialDevice, this.currentDevice);
+    console.log('there is changes ===> ' + thereIsChanges );
+    if (thereIsChanges) {
+      return confirm('Do you want discard the changes?');
+    }else {
+      return true;
+    }
   }
 
   fillData() {
@@ -78,6 +93,13 @@ export class EditDeviceComponent implements OnInit, OnDestroy {
     });
   }
 
+  deviceEquals(deviceA: Device, deviceB: Device): boolean {
+    return (deviceA._id === deviceB._id
+            && deviceA.name === deviceB.name
+            && deviceA.type === deviceB.type
+            && deviceA.desc === deviceB.desc);
+  }
+
   onDelete() {
     let rqst = new Request();
     rqst.id = this.currentDevice._id;
@@ -86,5 +108,15 @@ export class EditDeviceComponent implements OnInit, OnDestroy {
         this.router.navigate(['/devices']);
       }
     });
+  }
+
+  getDeviceFromForm(): Device {
+    const deviceFormObject = this.formData.value.deviceData;
+    return new Device(
+      this.currentDevice._id,
+      deviceFormObject.name,
+      deviceFormObject.type,
+      deviceFormObject.description
+    );
   }
 }

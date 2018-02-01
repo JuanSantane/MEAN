@@ -1,3 +1,4 @@
+import { CanDeactivateGuard } from './devices/can-deactivate-guard.service';
 import { NewDeviceComponent } from './devices/new-device/new-device.component';
 import { AboutComponent } from './about/about.component';
 import { NgModule } from '@angular/core';
@@ -13,7 +14,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 const appRoutes: Routes = [
   {path: '', redirectTo: 'devices', pathMatch: 'full' },
   { path: 'devices', component: DevicesComponent },
-  { path: 'devices/edit/:id', component: EditDeviceComponent },
+  { path: 'devices/edit/:id', component: EditDeviceComponent, canDeactivate: [CanDeactivateGuard] },
   { path: 'devices/new', component: NewDeviceComponent },
   { path: 'about', component: AboutComponent },
   { path: 'devices/:id', component: DeviceDetailComponent },
