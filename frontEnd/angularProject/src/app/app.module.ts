@@ -1,3 +1,5 @@
+import { SigninComponent } from './auth/signin/signin.component';
+import { SignupComponent } from './auth/signup/signup.component';
 import { NewDeviceComponent } from './devices/new-device/new-device.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { MaterialModule } from './material.module';
@@ -30,7 +32,9 @@ import { CanDeactivateGuard } from './devices/can-deactivate-guard.service';
     AboutComponent,
     EditDeviceComponent,
     PageNotFoundComponent,
-    NewDeviceComponent
+    NewDeviceComponent,
+    SignupComponent,
+    SigninComponent
   ],
   imports: [
     BrowserModule,
