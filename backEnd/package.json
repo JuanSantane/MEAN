@@ -16,7 +16,9 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.2",
+    "jwt-simple": "^0.5.1",
     "lodash": "^4.17.4",
+    "moment": "^2.20.1",
     "mongodb": "^2.2.16"
   },
   "devDependencies": {

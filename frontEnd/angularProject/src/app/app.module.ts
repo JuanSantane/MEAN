@@ -1,3 +1,5 @@
+import { PracticeComponent } from './practice/practice.component';
+import { PracticeService } from './practice.service';
 import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { NewDeviceComponent } from './devices/new-device/new-device.component';
@@ -34,7 +36,8 @@ import { CanDeactivateGuard } from './devices/can-deactivate-guard.service';
     PageNotFoundComponent,
     NewDeviceComponent,
     SignupComponent,
-    SigninComponent
+    SigninComponent,
+    PracticeComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +49,7 @@ import { CanDeactivateGuard } from './devices/can-deactivate-guard.service';
     ReactiveFormsModule,
     EmbedVideo.forRoot()
   ],
-  providers: [DeviceService, CanDeactivateGuard],
+  providers: [DeviceService, CanDeactivateGuard, PracticeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

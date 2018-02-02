@@ -1,3 +1,20 @@
-<p>
-  signin works!
-</p>
+<div class="container" class="center">
+  <form [formGroup]="signinForm" (ngSubmit)="onSubmit()" class="center">
+    <div formGroupName="userData">
+      <mat-form-field>
+        <input matInput type="text" placeholder="Fisrt name" formControlName="name">
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <input matInput type="text" placeholder="Surname" formControlName="surname">
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <input matInput type="text" placeholder="E-mail" formControlName="email">
+      </mat-form-field>
+    </div>
+    <!-- [disabled]="!signinForm.valid" -->
+    <button mat-raised-button color="primary"  type="submit">Save</button>
+    <button mat-raised-button color="primary" type="button" [routerLink]="['/devices']">Cancel</button>
+  </form>
+</div>

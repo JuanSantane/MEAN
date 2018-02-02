@@ -1,9 +1,18 @@
-module.exports = function(app, db) {
+const mongoUtil = require( '../mongoUtils' );
+const config = require('../config')
+const db = mongoUtil.getDevDb();
+const PARAMS_COLLECTION = config.collections.params;
+const ObjectID = require("mongodb").ObjectID;
+
+console.log('Iniciando rutas de PARAMS');
+
+module.exports = function(app) {
     // time = new Date().getTime();
+    console.log("BUSCANDO UN PARAMETRO");
     queryTries = 0;
-    var ObjectID = require("mongodb").ObjectID;  
     // GET A PARAM THAT MATCH WITH KEY PARAM.
-    app.get("/params/:key", (req, res) => {
+    app.get("/params/:key", (req, res) => {      
+      console.log(req.params);
       if (queryTries < 4) {
         queryTries++;
         console.log('intento fallido #' + queryTries);
@@ -12,7 +21,7 @@ module.exports = function(app, db) {
         return;
       }  
       console.log(req.params);
-      db.collection("params")
+      db.collection(PARAMS_COLLECTION)
         .findOne({ key: req.params.key},
           function(err, result) {
             if(err) console.log(err)
