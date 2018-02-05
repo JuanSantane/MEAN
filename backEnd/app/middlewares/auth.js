@@ -1,21 +1,40 @@
 'use strict'
-
-const jwt = require('jwt-simple');
-const moment = require('moment');
-const config = require('../config');
+const jwtService = require('../services/jwt.service')
+const bcrypt = require('bcrypt');
+const SALT_WORK_FACTOR = 10;
 
 function isAuth(req, res, next) {
-    if(!req.headers.authorization) {
-        return res.status(403).send({message: "You aren't authenticated"});
+    if (!req.headers.authorization) {
+        return res.status(403).send({ message: "You aren't authenticated" });
     }
-
     const token = req.headers.authorization.split(" ")[1];
-    const payload = jwt.decode(token, config.jwtSecretKey);
-    if(payload.exp <  moment().unix()) {
-        return res.status(401).send("The token has expired");
-    }
-    req.user = payload.sub;
-    next();
+    jwtService.decodeToken(token)
+        .then(response => {
+            req.user = response;
+            next();
+
+        })
+        .catch(error => {
+            res.status(error.status);
+        });
+
 }
 
-module.exports = {isAuth}
+function validatePassword(req, res, next) {
+    
+}
+
+function passToHash(req, res, next) {
+    console.log('Del lado del midleware');
+    console.log(req.body);
+    bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+        if (err) return next(err);
+        bcrypt.hash(req.body.password, salt, function (err, hash) {
+            if (err) return next(err);
+            req.body.password = hash;
+            next();
+        });
+    });
+
+}
+module.exports = { isAuth, validatePassword, passToHash }

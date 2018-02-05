@@ -12,13 +12,15 @@ import { DeviceDetailComponent } from './devices/device-detail/device-detail.com
 import { EditDeviceComponent } from './devices/edit-device/edit-device.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SigninComponent } from './auth/signin/signin.component';
+import { AuthGuard } from './guards/auth.guard.service';
 
 const appRoutes: Routes = [
   {path: '', redirectTo: 'devices', pathMatch: 'full' },
   { path: 'devices', component: DevicesComponent },
   { path: 'devices/edit/:id', component: EditDeviceComponent, canDeactivate: [CanDeactivateGuard] },
-  { path: 'devices/new', component: NewDeviceComponent },
+  { path: 'devices/new', component: NewDeviceComponent, canActivate:[AuthGuard] },
   { path: 'auth/signin', component: SigninComponent },
+  { path: 'auth/signup', component: SignupComponent },
   { path: 'about', component: AboutComponent },
   { path: 'devices/:id', component: DeviceDetailComponent },
   { path: '**', component: PageNotFoundComponent }

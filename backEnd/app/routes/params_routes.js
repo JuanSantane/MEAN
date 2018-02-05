@@ -4,11 +4,8 @@ const db = mongoUtil.getDevDb();
 const PARAMS_COLLECTION = config.collections.params;
 const ObjectID = require("mongodb").ObjectID;
 
-console.log('Iniciando rutas de PARAMS');
-
 module.exports = function(app) {
     // time = new Date().getTime();
-    console.log("BUSCANDO UN PARAMETRO");
     queryTries = 0;
     // GET A PARAM THAT MATCH WITH KEY PARAM.
     app.get("/params/:key", (req, res) => {      

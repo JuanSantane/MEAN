@@ -1,5 +1,5 @@
 import { PracticeComponent } from './practice/practice.component';
-import { PracticeService } from './practice.service';
+import { PracticeService } from './services/practice.service';
 import { SigninComponent } from './auth/signin/signin.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { NewDeviceComponent } from './devices/new-device/new-device.component';
@@ -22,6 +22,9 @@ import { AboutComponent } from './about/about.component';
 import { EmbedVideo } from 'ngx-embed-video';
 import { EditDeviceComponent } from './devices/edit-device/edit-device.component';
 import { CanDeactivateGuard } from './devices/can-deactivate-guard.service';
+import { UserService } from './services/user.service';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthGuard } from './guards/auth.guard.service';
 
 @NgModule({
   declarations: [
@@ -47,9 +50,10 @@ import { CanDeactivateGuard } from './devices/can-deactivate-guard.service';
     MaterialModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    HttpClientModule,
     EmbedVideo.forRoot()
   ],
-  providers: [DeviceService, CanDeactivateGuard, PracticeService],
+  providers: [DeviceService, PracticeService, UserService, CanDeactivateGuard, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

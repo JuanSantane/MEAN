@@ -29,3 +29,5 @@
 /frontEnd/angularProject/.DS_Store
 /frontEnd/angularProject/Thumbs.db
 
+# backend
+/backEnd/node_modules/

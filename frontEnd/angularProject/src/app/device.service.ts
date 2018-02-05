@@ -11,14 +11,11 @@ import { Observable } from 'rxjs/Observable';
 import { EventEmitter, OnInit } from '@angular/core';
 import { map, retry, switchMap, combineLatest, retryWhen } from 'rxjs/operators';
 
-
-
-
 @Injectable()
 export class DeviceService {
 
-  // rootUrl = 'http://localhost:3000/';
-  rootUrl = 'http://192.168.188.67:3000/';
+  rootUrl = 'http://localhost:3000/';
+  //rootUrl = 'http://192.168.188.67:3000/';
   // deviceListChanged = new Subject<Device[]>();
   headersValue = new Headers();
   private devices: Device[] = [];
@@ -62,10 +59,10 @@ export class DeviceService {
     }else {
       return this.fixResponse( this.rootUrl + 'devices/null/null/' + rqst.type );
     }
-}
+  }
 
 
-update(device: Device) {
+  update(device: Device) {
     this.headersValue = new Headers();
     this.headersValue.append('Content-Type', 'application/json');
     console.log('device ID ==> ' +  JSON.stringify(device._id));
@@ -89,40 +86,40 @@ update(device: Device) {
 
 
   }
-createOne(device: Device) {
-  this.headersValue = new Headers();
-  this.headersValue.append('Content-Type', 'application/json');
-  return this.http.post(
-    this.rootUrl + 'devices/new/',
-    JSON.stringify(device),
-       {headers: this.headersValue})
-    .map((response: Response) => {
-        console.log(response);
-        return response.json();
-      }
-    ).catch( (error: Response) => {
-      console.log('ERROR');
-      return Observable.throw('Something went wrong');
-    });
-}
-
-deleteOne(request: Request) {
-  this.headersValue = new Headers();
-  this.headersValue.append('Content-Type', 'application/json');
-    return this.http.delete(
-       this.rootUrl + 'devices/' + request.id,
-       {headers: this.headersValue} )
+  createOne(device: Device) {
+    this.headersValue = new Headers();
+    this.headersValue.append('Content-Type', 'application/json');
+    return this.http.post(
+      this.rootUrl + 'devices/new/',
+      JSON.stringify(device),
+        {headers: this.headersValue})
       .map((response: Response) => {
-        console.log(response);
-        this.onDeviceDeleted.emit(request.id);
-        this.devices = this.devices.filter(e => e._id !== request.id);
-        this.deviceListChanged.next( this.devices );
-        return response.json();
-      }).catch((error: Response) => {
+          console.log(response);
+          return response.json();
+        }
+      ).catch( (error: Response) => {
         console.log('ERROR');
         return Observable.throw('Something went wrong');
       });
-}
+  }
+
+  deleteOne(request: Request) {
+    this.headersValue = new Headers();
+    this.headersValue.append('Content-Type', 'application/json');
+      return this.http.delete(
+        this.rootUrl + 'devices/' + request.id,
+        {headers: this.headersValue} )
+        .map((response: Response) => {
+          console.log(response);
+          this.onDeviceDeleted.emit(request.id);
+          this.devices = this.devices.filter(e => e._id !== request.id);
+          this.deviceListChanged.next( this.devices );
+          return response.json();
+        }).catch((error: Response) => {
+          console.log('ERROR');
+          return Observable.throw('Something went wrong');
+        });
+  }
 
   getAppName(): Observable<string> {
     // S5-retry
@@ -182,7 +179,6 @@ deleteOne(request: Request) {
   }
 
   getDevicesByKeyword(keyword: string) {
-    console.log('consultando por ==> ' + keyword);
     if (keyword === '') { return this.getDevices(new Request()); }
     return this.http.get( this.rootUrl + 'devices/keyword/' + keyword )
     .map((response: Response) => {
@@ -202,6 +198,4 @@ deleteOne(request: Request) {
       return Observable.throw('Something went wrong');
     });
   }
-
-
 }

@@ -1,3 +1,32 @@
-<p>
-  signup works!
-</p>
+<div class="container" class="center">
+  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="center">
+    <div formGroupName="userData">
+      <mat-form-field>
+        <input matInput type="text" placeholder="Fisrt name" formControlName="name">
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <input matInput type="text" placeholder="Surname" formControlName="surname">
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <input matInput type="text" placeholder="E-mail" formControlName="email">
+      </mat-form-field>
+      <br>
+
+      <mat-form-field>
+        <input matInput type="password" placeholder="password" formControlName="password">
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="password" placeholder="verify password" formControlName="re-password">
+      </mat-form-field>
+      <div *ngIf="!validatepassMatching()">
+        <h3>passwords mismatch</h3>
+      </div>
+
+
+    </div>
+    <button mat-raised-button color="primary" [disabled]="!signupForm.valid || !validatepassMatching()" type="submit">SignIn</button>
+    <button mat-raised-button color="primary" type="button" [routerLink]="['/devices']">Cancel</button>
+  </form>
+</div>

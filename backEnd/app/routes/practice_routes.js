@@ -5,8 +5,6 @@ const usersOrg_3 = require('./Users_org_3');
 
 const auth = require('../middlewares/auth');
 
-console.log("Iniciando rutas de PARAMS");
-
 module.exports = function(app) {
   app.get("/practice/getIssue", (req, res) => {
     res.json(issueObj);
