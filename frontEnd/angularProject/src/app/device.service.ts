@@ -10,12 +10,13 @@ import 'rxjs/Rx';
 import { Observable } from 'rxjs/Observable';
 import { EventEmitter, OnInit } from '@angular/core';
 import { map, retry, switchMap, combineLatest, retryWhen } from 'rxjs/operators';
+import { UserService } from './services/user.service';
 
 @Injectable()
 export class DeviceService {
 
   rootUrl = 'http://localhost:3000/';
-  //rootUrl = 'http://192.168.188.67:3000/';
+  // rootUrl = 'http://192.168.188.67:3000/';
   // deviceListChanged = new Subject<Device[]>();
   headersValue = new Headers();
   private devices: Device[] = [];
@@ -32,7 +33,7 @@ export class DeviceService {
     .combineLatest(this.lsrSubject, this.vocSubject,
       function(s1, s2, s3){ return new LastViewsByDeviceType(s1, s2, s3); });
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private authService: UserService) {
     this.combineLatest
       .subscribe((combine: LastViewsByDeviceType) => {
         this.combineLatestViews = combine;
@@ -65,6 +66,7 @@ export class DeviceService {
   update(device: Device) {
     this.headersValue = new Headers();
     this.headersValue.append('Content-Type', 'application/json');
+    // this.headersValue.append('authorization_token', this.authService.getToken());
     console.log('device ID ==> ' +  JSON.stringify(device._id));
     console.log(JSON.stringify(device));
     const resultado =  this.http.put(
@@ -106,18 +108,19 @@ export class DeviceService {
   deleteOne(request: Request) {
     this.headersValue = new Headers();
     this.headersValue.append('Content-Type', 'application/json');
+    console.log('item will be deleted');
       return this.http.delete(
         this.rootUrl + 'devices/' + request.id,
         {headers: this.headersValue} )
         .map((response: Response) => {
-          console.log(response);
           this.onDeviceDeleted.emit(request.id);
+          console.log(this.devices);
           this.devices = this.devices.filter(e => e._id !== request.id);
           this.deviceListChanged.next( this.devices );
           return response.json();
         }).catch((error: Response) => {
-          console.log('ERROR');
-          return Observable.throw('Something went wrong');
+          console.log(error);
+          return Observable.throw(error);
         });
   }
 
@@ -135,23 +138,28 @@ export class DeviceService {
   }
 
   fixResponse(route: string) {
-    return this.http.get( route )
+    this.headersValue = new Headers();
+    this.headersValue.append('authorization_token', this.authService.getToken());
+    return this.http.get( route, {headers: this.headersValue } )
     .map((response: Response) => {
       const data = response.json();
+      let count = 0;
       for (const device of data) {
+        count = count + 1;
         if (!device.type) { device.type = 'DEFAULT TYPE'; }
         if (!device.name) { device.name = 'DEFAULT NAME'; }
         if (!device.desc) { device.desc = 'DEFAULT DESCRIPTION'; }
         if (!device._id) { device._id = null; }
       }
+
       this.devices = data;
       this.deviceListChanged.next(this.devices);
-
+      console.log(count + ' devices found' );
       return data;
     })
     .catch((error: Response) => {
       console.log(error);
-      return Observable.throw('Something went wrong');
+      return Observable.throw(error);
     });
 
   }

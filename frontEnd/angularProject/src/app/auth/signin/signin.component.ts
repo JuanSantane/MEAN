@@ -24,10 +24,10 @@ export class SigninComponent implements OnInit, OnDestroy {
       'password': new FormControl(null, [Validators.required])
     })
   });
-  logged: false;
-  submited = false;
+  logged= false;
+  submited= false;
 
-  constructor( private userService: UserService) { }
+  constructor( private userService: UserService, private router: Router) { }
 
   ngOnInit() {
 
@@ -37,7 +37,6 @@ export class SigninComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    this.submited = true;
     const userData =  this.signinForm.getRawValue().userData;
     const user = {
       email: userData.email,
@@ -45,16 +44,19 @@ export class SigninComponent implements OnInit, OnDestroy {
     };
 
     this.userService.signin(user).subscribe(
-      (response) => {
-        console.log(response);
-      },
-      (err)=> {
-        if(err.status === 404){
+      (response: any) => {
+        this.logged = true;
+        this.submited = true;
+        this.router.navigate(['/devices']);
+       },
+      (err) => {
+        if (err.status === 404) {
           console.log('user no found');
           this.logged = false;
         }
+        this.submited = true;
       },
-      ()=> {console.log('[onComplete].signin');}
+      () => {console.log('[onComplete].signin'); }
     );
   }
 

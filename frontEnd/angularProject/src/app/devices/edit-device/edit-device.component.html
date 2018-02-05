@@ -1,4 +1,4 @@
-<div class="container">
+<div *ngIf="allowedToViewContent" class="container">
   <div class="row">
     <form (ngSubmit)="onSubmit()" #formData="ngForm">
       <div id="device-data" ngModelGroup="deviceData" #DeviceData="ngModelGroup">
@@ -25,3 +25,4 @@
     </form>
   </div>
 </div>
+<app-access-forbidden *ngIf="!allowedToViewContent"></app-access-forbidden>

@@ -25,6 +25,7 @@ import { CanDeactivateGuard } from './devices/can-deactivate-guard.service';
 import { UserService } from './services/user.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthGuard } from './guards/auth.guard.service';
+import { AccessForbiddenComponent } from './shared/access-forbidden/access-forbidden.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { AuthGuard } from './guards/auth.guard.service';
     NewDeviceComponent,
     SignupComponent,
     SigninComponent,
-    PracticeComponent
+    PracticeComponent,
+    AccessForbiddenComponent
   ],
   imports: [
     BrowserModule,

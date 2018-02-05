@@ -11,5 +11,7 @@ module.exports = function(app) {
     app.post("/auth/signup", auth.passToHash,  userCtrl.signup);
     // SIGNIN AN USER
     app.post('/auth/signin', userCtrl.signin);
+    // GET USER BY ID
+    app.get('/auth/:id', userCtrl.getUser);
 
 };

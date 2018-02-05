@@ -1,8 +1,9 @@
 const deviceCtrl = require('../controllers/deviceCtrl');
+const auth = require('../middlewares/auth');
 
 module.exports = function(app) {
   // CREATE A NEW DOCUMENT.
-  app.post("/devices/new/", deviceCtrl.createOneDevice);
+  app.post("/devices/new/", auth.validateToken, deviceCtrl.createOneDevice);
 
   // UPDATE AN EXISTING DOCUMENT.
   app.put("/devices/:id", deviceCtrl.UpdateDevice);
@@ -14,7 +15,7 @@ module.exports = function(app) {
   app.get("/devices", deviceCtrl.getAllDevices);
 
   // GET A DEVICE THAT MATCH WITH ID PARAM.
-  app.get("/devices/:id", deviceCtrl.getDeviceById);
+  app.get("/devices/:id", auth.validateToken, deviceCtrl.getDeviceById);
 
   // GET DEVICE THAT MACTH WITH NAME, TYPE PARAMS.
   app.get("/devices/:id/:name/:type", deviceCtrl.getDevicesByIdName);

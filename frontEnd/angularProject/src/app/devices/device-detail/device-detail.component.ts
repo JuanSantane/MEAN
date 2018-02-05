@@ -15,6 +15,7 @@ export class DeviceDetailComponent implements OnInit, OnDestroy {
 
   queryRqst: Request = new Request();
   currentDevice: Device;
+  allowedToViewContent = true;
   private paramsSubscription: Subscription;
 
   constructor(
@@ -27,14 +28,17 @@ export class DeviceDetailComponent implements OnInit, OnDestroy {
     this.paramsSubscription = this.route.params
       .subscribe(
         (params: Params) => {
+          console.log(params);
           this.queryRqst.id = params.id;
           this.deviceService.getDevices(this.queryRqst)
-        .subscribe(
-          (device: any ) =>  {
-            this.currentDevice = device;
-          },
-          (error) => { console.log(error); console.log('----------------------------------------'); }
-        ); }
+            .subscribe((device: any ) =>  {
+                console.log(device);
+                this.currentDevice = device;
+              },
+              (error) => { console.log(error); console.log('----------------------------------------'); },
+              () => {console.log('[DeviceDetailComponent].paramsSubscription subscription Completed')}
+            );
+        }
       );
   }
 

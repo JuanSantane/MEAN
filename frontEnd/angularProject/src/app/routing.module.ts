@@ -18,7 +18,7 @@ const appRoutes: Routes = [
   {path: '', redirectTo: 'devices', pathMatch: 'full' },
   { path: 'devices', component: DevicesComponent },
   { path: 'devices/edit/:id', component: EditDeviceComponent, canDeactivate: [CanDeactivateGuard] },
-  { path: 'devices/new', component: NewDeviceComponent, canActivate:[AuthGuard] },
+  { path: 'devices/new', component: NewDeviceComponent, canActivate: [AuthGuard] },
   { path: 'auth/signin', component: SigninComponent },
   { path: 'auth/signup', component: SignupComponent },
   { path: 'about', component: AboutComponent },

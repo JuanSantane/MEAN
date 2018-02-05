@@ -12,8 +12,6 @@ const bcrypt = require('bcrypt');
 function signup(req, res) {
   const newUser = new User(req.body.name, req.body.surname, req.body.email);
   newUser.password = req.body.password;
-  console.log('del lado del que guarda en mongo');
-  console.log(newUser);
   db.collection(USER_COLLECTION).insertOne(newUser, (err, commandResult) => {
     if (err) {
       res.status(500).send({ message: "While creating the user " + err });
@@ -26,15 +24,14 @@ function signup(req, res) {
 }
 
 function signin(req, res) {
+  console.log('Loggin... ');
   console.log(req.body);
-  console.log('buscando por');
-  console.log(req.body.email);
   db.collection(USER_COLLECTION)
     .findOne({ email: req.body.email },
     function (err, result) {
       if (err) {
         console.log(err);
-        return res.status(500).send({ message: 'Error al buscar el usuario' });
+        return res.status(500).send({ message: 'Error looking for ' + req.body.email });
       }
       if (!result) {
         console.log('User no found in MongoDb');
@@ -47,9 +44,11 @@ function signin(req, res) {
         if (!validationResult) {
           return res.status(401).send({ message: 'invalid password' });
         } else {
-          req.user = user;
+          // req.user = user;
+          const basicUser = new User(user.name, user.nickname, user.email);
           res.status(200).send({
             message: 'login successful',
+            user: basicUser,
             token: jwtService.createToken(user)
           });
         }
@@ -58,8 +57,27 @@ function signin(req, res) {
     );
 }
 
+function getUser(req, res) {
+  const id = new ObjectID.createFromHexString(req.params.id);
+  console.log('################# getting user by ID ########################');
+  db.collection(USER_COLLECTION)
+    .findOne({_id: id}, {'name': 1, 'email': 1, 'nickname':1}, (err, result) => {
+      if(err) {
+        res.status(500).send({message: 'internal server error'});
+      }
+      if(!result) {
+        res.status(404).send({message: 'user not found'});
+      }
+      console.log('USER FOUND');
+      console.log(result);
+      res.status(200).send(result);
+    })
+
+}
+
 
 module.exports = {
   signin,
-  signup
+  signup,
+  getUser
 };

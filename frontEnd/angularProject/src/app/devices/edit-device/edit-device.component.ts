@@ -27,6 +27,7 @@ export class EditDeviceComponent implements OnInit, OnDestroy, CanComponentDeact
     description: ''
   };
   submited = false;
+  allowedToViewContent = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,6 +45,7 @@ export class EditDeviceComponent implements OnInit, OnDestroy, CanComponentDeact
     this.deviceService.update(this.currentDevice)
     .subscribe(
       (res) => {
+        this.submited = true;
         this.router.navigate(['/devices']);
       }
     );
@@ -60,7 +62,11 @@ export class EditDeviceComponent implements OnInit, OnDestroy, CanComponentDeact
             this.fillData();
             this.initialDevice = this.getDeviceFromForm();
           },
-          (error) => { console.log(error); }
+          (error) => { console.log(error);
+            if (error.status === 403) {
+               this.allowedToViewContent = false;
+            }
+           }
         ); }
       );
   }
@@ -69,11 +75,10 @@ export class EditDeviceComponent implements OnInit, OnDestroy, CanComponentDeact
     this.paramsSubscription.unsubscribe();
   }
   canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+    if (!this.allowedToViewContent || this.submited) { return true; }
 
     this.currentDevice = this.getDeviceFromForm();
 
-    console.log(this.initialDevice);
-    console.log(this.currentDevice);
     const thereIsChanges = !this.deviceEquals(this.initialDevice, this.currentDevice);
     console.log('there is changes ===> ' + thereIsChanges );
     if (thereIsChanges) {
@@ -101,16 +106,20 @@ export class EditDeviceComponent implements OnInit, OnDestroy, CanComponentDeact
   }
 
   onDelete() {
-    let rqst = new Request();
+    const rqst = new Request();
     rqst.id = this.currentDevice._id;
     this.deviceService.deleteOne(rqst).subscribe(res => {
       if (res.ok === 1) {
         this.router.navigate(['/devices']);
       }
-    });
+    },
+    (error) => {console.log(error); },
+    () => {console.log('ondelete.completed'); }
+  );
   }
 
   getDeviceFromForm(): Device {
+    console.log('obteniendo informacion del formulario');
     const deviceFormObject = this.formData.value.deviceData;
     return new Device(
       this.currentDevice._id,

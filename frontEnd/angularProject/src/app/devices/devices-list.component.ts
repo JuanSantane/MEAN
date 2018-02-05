@@ -63,7 +63,6 @@ export class DevicesComponent implements OnInit, OnDestroy {
       this.queryRqst.isVoid()
     ) {
       this.fixRequest();
-      console.log(this.queryRqst);
       this.deviceService.getDevices(this.queryRqst).subscribe(
         (devices: any[]) => {
           this.devices = devices;
@@ -91,7 +90,6 @@ export class DevicesComponent implements OnInit, OnDestroy {
     this.onGetDevices(null, '');
     this.subscription = this.deviceService.onDeviceDeleted.subscribe(
       (deviceId: string) => {
-        console.log('item with id = ' + deviceId + ' was removed');
         this.devices = this.removeItemById(this.devices, deviceId);
       }
     );

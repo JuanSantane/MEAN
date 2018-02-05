@@ -24,7 +24,7 @@ module.exports = function(app) {
           res.json({value: 'No se ha encontrado nada'});
       }
   });
-  app.get('/practice/privacity', auth.isAuth, (req, res) => {
+  app.get('/practice/privacity', auth.validateToken, (req, res) => {
 
   });
 

@@ -11,6 +11,6 @@ function User(name, nickname, email) {
           && this.email == null | ''
       );
   }
-  
+ 
   
   module.exports = User;
