@@ -65,10 +65,12 @@
       </div>
     </div>
     <br>
-    <!-- (deviceSelected)="ondeviceSelected($event)" -->
-    <app-device *ngFor="let deviceItem of devices" [device]="deviceItem">
-      <img [src]="getUrlImage(deviceItem.type)" height="60" width="60">
-    </app-device>
+    <div style="max-height: 550px; overflow-y: scroll;" >
+      <app-device *ngFor="let deviceItem of devices" [device]="deviceItem" >
+        <img [src]="getUrlImage(deviceItem.type)" height="60" width="60">
+      </app-device>
+    </div>
+
     <div *ngIf="devices.length == 0" class="center-text">
       <img
         src="https://thumbs.dreamstime.com/b/d-man-holding-magnifying-glass-over-white-background-42959312.jpg"

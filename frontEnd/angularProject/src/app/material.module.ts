@@ -8,6 +8,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSelectModule} from '@angular/material/select';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 const allModules = [
@@ -19,7 +20,8 @@ const allModules = [
   MatTooltipModule,
   MatSnackBarModule,
   MatDialogModule,
-  MatSelectModule
+  MatSelectModule,
+  MatExpansionModule
 ];
 
 @NgModule({

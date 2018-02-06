@@ -62,9 +62,10 @@ export class EditDeviceComponent implements OnInit, OnDestroy, CanComponentDeact
             this.fillData();
             this.initialDevice = this.getDeviceFromForm();
           },
-          (error) => { console.log(error);
+          (error) => {
+            console.log(error);
             if (error.status === 403) {
-               this.allowedToViewContent = false;
+              this.allowedToViewContent = false;
             }
            }
         ); }

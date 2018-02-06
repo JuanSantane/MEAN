@@ -15,5 +15,9 @@
       <button mat-raised-button color="warn" (click)="onBackButton()">REMOVE</button>
     </mat-card-actions>
   </mat-card>
-  <app-access-forbidden *ngIf="!allowedToViewContent"></app-access-forbidden>
+  <app-access-forbidden *ngIf="!allowedToViewContent">
+    <p>
+      {{errorMessage}}
+    </p>
+  </app-access-forbidden>
 </div>

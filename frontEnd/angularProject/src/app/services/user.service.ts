@@ -43,6 +43,9 @@ export class UserService {
       console.log(response);
       this.userLogged = response.user;
       this.token = response.token;
+      this.newUserLogged.next(this.userLogged);
+      localStorage.setItem(this.TOKEN_KEY, this.token);
+      this.printstatus();
       return response;
     }
     );
@@ -72,9 +75,11 @@ export class UserService {
   }
 
   public logout(): void {
+    console.log('Cerrando sesion del token' + this.token);
     this.token = null;
     this.userLogged = null;
     localStorage.removeItem(this.TOKEN_KEY);
+    this.newUserLogged.next(null);
   }
 
   public getToken(): any {

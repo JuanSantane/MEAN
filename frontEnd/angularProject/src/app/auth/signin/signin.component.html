@@ -3,7 +3,7 @@
     <div formGroupName="userData">
       <mat-form-field>
         <input matInput type="text" placeholder="email or nickname" formControlName="email">
-      </mat-form-field>      
+      </mat-form-field>
       <br>
       <mat-form-field>
         <input matInput type="password" placeholder="password" formControlName="password">
@@ -13,6 +13,6 @@
     <button mat-raised-button color="primary" type="button" [routerLink]="['/devices']">Cancel</button>
   </form>
   <div *ngIf="!logged && submited" >
-    <h1>User no found</h1>
+    <h1>{{messageToUser}}</h1>
   </div>
 </div>

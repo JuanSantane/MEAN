@@ -1,3 +1,4 @@
+import { UserService } from './../../services/user.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Device } from './../../shared/Device';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
@@ -17,11 +18,13 @@ export class DeviceDetailComponent implements OnInit, OnDestroy {
   currentDevice: Device;
   allowedToViewContent = true;
   private paramsSubscription: Subscription;
+  errorMessage= '';
 
   constructor(
     private route: ActivatedRoute,
     private deviceService: DeviceService,
-    private router: Router
+    private router: Router,
+    private userService: UserService
   ) { }
 
   ngOnInit() {
@@ -35,7 +38,16 @@ export class DeviceDetailComponent implements OnInit, OnDestroy {
                 console.log(device);
                 this.currentDevice = device;
               },
-              (error) => { console.log(error); console.log('----------------------------------------'); },
+              (error) => {
+                const errorBody = JSON.parse(error._body);
+                console.log(errorBody);
+                this.allowedToViewContent = false;
+                this.errorMessage = errorBody.message;
+                this.userService.logout();
+                // setTimeout(() => {
+                //   this.router.navigate(['/auth/signin']);
+                // }, 3000);
+              },
               () => {console.log('[DeviceDetailComponent].paramsSubscription subscription Completed')}
             );
         }

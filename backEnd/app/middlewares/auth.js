@@ -19,7 +19,7 @@ function validateToken(req, res, next) {
         })
         .catch(error => {
             console.log(error);
-            res.status(error.status).send({message: 'invalid token'});
+            res.status(error.status).send({message: error.message});
         });
 }
 

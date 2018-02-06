@@ -26,6 +26,7 @@ export class SigninComponent implements OnInit, OnDestroy {
   });
   logged= false;
   submited= false;
+  messageToUser= '';
 
   constructor( private userService: UserService, private router: Router) { }
 
@@ -50,10 +51,21 @@ export class SigninComponent implements OnInit, OnDestroy {
         this.router.navigate(['/devices']);
        },
       (err) => {
-        if (err.status === 404) {
-          console.log('user no found');
-          this.logged = false;
+        console.log(err);
+        switch (err.status) {
+          case 401 :
+            console.log('Failed authentication');
+            this.messageToUser = 'Failed authentication';
+            break;
+          case 404 :
+            console.log('User no found');
+            this.messageToUser = 'User no found';
+            break;
+          default :
+            console.log('Error was found');
+            this.messageToUser = 'Error was found';
         }
+        this.logged = false;
         this.submited = true;
       },
       () => {console.log('[onComplete].signin'); }

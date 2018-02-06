@@ -31,7 +31,9 @@ export class DeviceService {
 
   public combineLatest: Observable<LastViewsByDeviceType> = this.mraSubject
     .combineLatest(this.lsrSubject, this.vocSubject,
-      function(s1, s2, s3){ return new LastViewsByDeviceType(s1, s2, s3); });
+      function(s1, s2, s3){
+         return new LastViewsByDeviceType(s1, s2, s3);
+      });
 
   constructor(private http: Http, private authService: UserService) {
     this.combineLatest
@@ -137,6 +139,8 @@ export class DeviceService {
     //   .delayWhen(val => Observable.timer(val * 1000)));
   }
 
+
+  // NOTE: CREATE A METHOD FOR GET_DEVICES AND OTHER FOR GET_DEVICE
   fixResponse(route: string) {
     this.headersValue = new Headers();
     this.headersValue.append('authorization_token', this.authService.getToken());
@@ -151,10 +155,13 @@ export class DeviceService {
         if (!device.desc) { device.desc = 'DEFAULT DESCRIPTION'; }
         if (!device._id) { device._id = null; }
       }
+      if (count !== 0) {
+        this.devices = data;
+      }
 
-      this.devices = data;
       this.deviceListChanged.next(this.devices);
-      console.log(count + ' devices found' );
+      console.log('query result ===> ');
+      console.log(data);
       return data;
     })
     .catch((error: Response) => {

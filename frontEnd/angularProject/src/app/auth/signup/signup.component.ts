@@ -19,13 +19,13 @@ export class SignupComponent implements OnInit, OnDestroy {
       'email': new FormControl(null, [Validators.email, Validators.required]),
       'surname': new FormControl(null, [Validators.required]),
       'password': new FormControl(null, [Validators.required]),
-      're-password': new FormControl(null,[Validators.required])
+      're-password': new FormControl(null, [Validators.required])
     })
   });
   private signupSubscription: Subscription;
 
   constructor(
-    private userService: UserService, 
+    private userService: UserService,
     private router: Router
   ) { }
 
@@ -37,12 +37,12 @@ export class SignupComponent implements OnInit, OnDestroy {
     this.signupForm.get('userData').get('re-password').valueChanges
     .subscribe(value => {
     });
-  } 
+  }
 
   validatepassMatching() {
     let password = this.signupForm.get('userData').get('password').value;
     let rePassword = this.signupForm.get('userData').get('re-password').value;
-    return password === rePassword;     
+    return password === rePassword;
   }
   ngOnDestroy(): void {
   }
@@ -62,7 +62,7 @@ export class SignupComponent implements OnInit, OnDestroy {
         (response: any) => {
       },
       err => {
-        console.log("Error occured.")
+        console.log('Error occured.');
         console.log(err);
       },
       () => { this.router.navigate(['/devices']); }
